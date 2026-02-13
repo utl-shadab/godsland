@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Wallet, Star, User, Settings, LogOut, Grid } from 'lucide-react';
+import gsap from 'gsap';
 import MegaMenu from './MegaMenu';
 import MobileMenu from './MobileMenu';
 import { useLoading } from '../context/LoadingContext';
@@ -10,9 +11,11 @@ const Header = () => {
     const { isLoading } = useLoading();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-    const [isVisible, setIsVisible] = useState(false); // Start hidden
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const headerRef = useRef(null);
     const lastScrollY = useRef(0);
+
 
     const toggleMegaMenu = () => {
         setIsMegaMenuOpen(!isMegaMenuOpen);
@@ -20,44 +23,61 @@ const Header = () => {
 
     // Handle Loading State
     useEffect(() => {
-        if (!isLoading) {
-            // Small delay to let preloader exit animation start
-            const timer = setTimeout(() => {
-                setIsVisible(true);
-            }, 800);
-            return () => clearTimeout(timer);
+        if (!isLoading && headerRef.current) {
+            // Animate header in on load
+            gsap.fromTo(
+                headerRef.current,
+                { y: -80, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
+            );
         }
     }, [isLoading]);
 
+    // Handle GSAP Animation based on visibility
     useEffect(() => {
-        if (isLoading) return; // Don't react to scroll if loading
+        if (!headerRef.current) return;
 
-        // Initialize lastScrollY to current position to prevent initial jump logic errors
+        if (isVisible) {
+            gsap.to(headerRef.current, {
+                y: 0,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        } else {
+            gsap.to(headerRef.current, {
+                y: -100, // Slightly more than 80 to be safe
+                duration: 0.3,
+                ease: 'power2.in'
+            });
+        }
+    }, [isVisible]);
+
+    useEffect(() => {
+        if (isLoading) return;
+
         lastScrollY.current = window.scrollY;
 
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-
-            // Prevent negative scroll values (like bounce on iOS)
-            if (currentScrollY < 0) return;
-
             const delta = currentScrollY - lastScrollY.current;
 
-            // Determine scroll direction and visibility
+            // Prevent negative scroll values
+            if (currentScrollY < 0) return;
+
+            // Update scrolled state for styling
             if (currentScrollY > 50) {
                 setIsScrolled(true);
-
-                if (delta > 0) {
-                    // Scrolling down - Hide
-                    setIsVisible(false);
-                    setIsMegaMenuOpen(false);
-                } else if (delta < 0) {
-                    // Scrolling up - Show
-                    setIsVisible(true);
-                }
             } else {
-                // At top of page, always show
                 setIsScrolled(false);
+            }
+
+            // Determine visibility
+            if (currentScrollY > 50 && delta > 0) {
+                // Scrolling down - Hide
+                setIsVisible(false);
+                setIsMegaMenuOpen(false);
+            } else if (delta < 0 || currentScrollY <= 50) {
+                // Scrolling up OR near top - Show
                 setIsVisible(true);
             }
 
@@ -66,17 +86,24 @@ const Header = () => {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [isLoading]); // Re-bind when loading finishes
+    }, [isLoading]);
 
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full h-20 z-50 px-8 flex justify-between items-center transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.175,1)] ${isVisible ? 'translate-y-0' : '-translate-y-full'
-                    } ${isScrolled
-                        ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30 shadow-[0_0_20px_rgba(0,255,163,0.15)]'
-                        : 'bg-transparent border-transparent'
+                ref={headerRef}
+                className={` w-full h-20 z-50 px-8 flex justify-between items-center transition-colors duration-300 ${isScrolled
+                    ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30'
+                    : 'bg-transparent border-transparent'
                     }`}
             >
+                {/* <header
+                ref={headerRef}
+                className={`fixed top-0 left-0 w-full h-20 z-50 px-8 flex justify-between items-center transition-colors duration-300 ${isScrolled
+                    ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30 shadow-[0_0_20px_rgba(0,255,163,0.15)]'
+                    : 'bg-transparent border-transparent'
+                    }`}
+            > */}
                 <div className="text-2xl font-bold uppercase tracking-widest text-white flex items-center gap-2 group z-[102]">
                     <Link to="/" className="flex items-center gap-1">
                         Gods<span className={`transition-all duration-300 ${isScrolled ? 'text-neon-green' : 'text-white group-hover:text-neon-green'}`}>land</span>
@@ -112,11 +139,7 @@ const Header = () => {
                         <span>1,250</span>
                     </div>
 
-                    {/* Connect Wallet Button (Hidden if logged in - for demo we keep both or toggle) */}
-                    {/* For this demo, let's assume we are "Logged In" and show the Profile Dropdown instead of just Connect, 
-                        or user wants both? "just right of the button of connect wallet add a user dropdown" 
-                        I will show the Connect button AND the Dropdown for now as per specific request. */}
-
+                    {/* Connect Wallet Button */}
                     <button className="hidden md:flex items-center gap-2 py-2 px-6 bg-white/5 border border-neon-green/50 rounded-full text-neon-green font-bold text-xs uppercase tracking-widest hover:bg-neon-green hover:text-black hover:shadow-[0_0_20px_rgba(0,255,163,0.4)] transition-all duration-300">
                         <Wallet size={16} />
                         <span>Connect</span>

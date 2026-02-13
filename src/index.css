@@ -35,7 +35,7 @@
 html,
 body {
   @apply w-full h-full bg-black text-text-primary font-primary overflow-x-hidden;
-  background-image: var(--background-image-gradient-bg);
+  /* background-image: var(--background-image-gradient-bg); */
   background-attachment: fixed;
 }
 
