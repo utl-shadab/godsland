@@ -3,9 +3,15 @@ import { Share2, Music, Camera, Grid, Watch } from 'lucide-react';
 export const CATEGORIES = [
     { id: 'luxury', name: 'Luxury', icon: Share2, color: 'text-purple-400' },
     { id: 'business', name: 'Business', icon: Grid, color: 'text-blue-400' },
-    { id: 'wellness', name: 'Wellness', icon: Watch, color: 'text-green-400' }, // Replaced Activity with Watch as proxy
+    { id: 'wellness', name: 'Wellness', icon: Watch, color: 'text-green-400' },
     { id: 'entertainment', name: 'Entertainment', icon: Music, color: 'text-pink-400' },
     { id: 'art', name: 'Art', icon: Camera, color: 'text-yellow-400' },
+];
+
+export const TRENDING_COLLECTIONS = [
+    { id: 'trend-1', name: 'Bored Ape Yacht Club', floorPrice: '65.2 ETH', volume24h: '1,240 ETH', image: 'https://picsum.photos/seed/bayc/400/400', verified: true },
+    { id: 'trend-2', name: 'Pudgy Penguins', floorPrice: '12.5 ETH', volume24h: '850 ETH', image: 'https://picsum.photos/seed/pudgy/400/400', verified: true },
+    { id: 'trend-3', name: 'Azuki', floorPrice: '15.8 ETH', volume24h: '620 ETH', image: 'https://picsum.photos/seed/azuki/400/400', verified: true },
 ];
 
 export const COLLECTIONS = CATEGORIES.flatMap(cat =>
@@ -41,13 +47,15 @@ export const MOCK_NFTS = COLLECTIONS.flatMap(col =>
     Array.from({ length: 6 }).map((_, i) => ({
         id: `${col.id}-item-${i + 1}`,
         title: `${col.name} #${i + 1}`,
-        creator: `Creator of ${col.name}`,
+        creator: `${col.name}`,
         price: (Math.random() * 2 + 0.1).toFixed(2) + ' ETH',
+        lastSale: (Math.random() * 1.5 + 0.05).toFixed(2) + ' ETH',
         image: `https://picsum.photos/seed/${col.id}item${i}/400/400`,
         category: col.categoryId,
         collectionId: col.id,
         type: ['Basic', 'Special', 'Premium', 'Legendary'][Math.floor(Math.random() * 4)],
-        stars: Math.floor(Math.random() * 500)
+        stars: Math.floor(Math.random() * 500),
+        verified: col.verified
     }))
 );
 

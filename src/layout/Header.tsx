@@ -105,13 +105,13 @@ const Header = () => {
                     }`}
             > */}
                 <div className="text-2xl font-bold uppercase tracking-widest text-white flex items-center gap-2 group z-[102]">
-                    <Link to="/" className="flex items-center gap-1">
+                    <Link to="/" className="flex items-center gap-1" aria-label="Godsland Home">
                         Gods<span className={`transition-all duration-300 ${isScrolled ? 'text-neon-green' : 'text-white group-hover:text-neon-green'}`}>land</span>
                     </Link>
                 </div>
 
                 {/* Desktop Nav */}
-                <nav className="hidden md:flex gap-10 items-center">
+                <nav className="hidden md:flex gap-10 items-center" aria-label="Main Navigation">
                     <Link to="/market" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Marketplace
                     </Link>
@@ -124,23 +124,28 @@ const Header = () => {
                     <Link to="/collections" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Collections
                     </Link>
-                    <div
+                    <button
                         className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 flex items-center gap-1 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled || isMegaMenuOpen ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}
                         onClick={toggleMegaMenu}
+                        aria-expanded={isMegaMenuOpen}
+                        aria-haspopup="true"
                     >
                         Categories <ChevronDown size={14} className={`transition-transform duration-300 ${isMegaMenuOpen ? 'rotate-180' : ''}`} />
-                    </div>
+                    </button>
                 </nav>
 
                 <div className="flex items-center gap-6">
                     {/* Star Balance (Visible when logged in) */}
-                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-[#111] border border-gold-start/20 rounded-full text-gold-start font-bold text-sm shadow-[0_0_15px_rgba(255,215,0,0.1)]">
+                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-[#111] border border-gold-start/20 rounded-full text-gold-start font-bold text-sm shadow-[0_0_15px_rgba(255,215,0,0.1)]" aria-label="Points balance">
                         <Star size={16} className="fill-gold-start" />
                         <span>1,250</span>
                     </div>
 
                     {/* Connect Wallet Button */}
-                    <button className="hidden md:flex items-center gap-2 py-2 px-6 bg-white/5 border border-neon-green/50 rounded-full text-neon-green font-bold text-xs uppercase tracking-widest hover:bg-neon-green hover:text-black hover:shadow-[0_0_20px_rgba(0,255,163,0.4)] transition-all duration-300">
+                    <button
+                        className="hidden md:flex items-center gap-2 py-2 px-6 bg-white/5 border border-neon-green/50 rounded-full text-neon-green font-bold text-xs uppercase tracking-widest hover:bg-neon-green hover:text-black hover:shadow-[0_0_20px_rgba(0,255,163,0.4)] transition-all duration-300"
+                        aria-label="Connect Wallet"
+                    >
                         <Wallet size={16} />
                         <span>Connect</span>
                     </button>

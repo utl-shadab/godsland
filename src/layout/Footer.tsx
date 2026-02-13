@@ -61,9 +61,9 @@ const Footer = () => {
                             The premier marketplace for rare digital artifacts. Join the revolution and own a piece of the future.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-neon-green hover:text-neon-green hover:shadow-glow-neon"><Twitter size={18} /></a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-discord hover:text-[#5865F2] hover:shadow-[0_0_15px_rgba(88,101,242,0.4)]"><Send size={18} /></a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-pink-500 hover:text-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]"><Instagram size={18} /></a>
+                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-neon-green hover:text-neon-green hover:shadow-glow-neon" aria-label="Follow us on Twitter"><Twitter size={18} /></a>
+                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-discord hover:text-[#5865F2] hover:shadow-[0_0_15px_rgba(88,101,242,0.4)]" aria-label="Join our Discord"><Send size={18} /></a>
+                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex justify-center items-center text-white transition-all duration-300 hover:border-pink-500 hover:text-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]" aria-label="Follow us on Instagram"><Instagram size={18} /></a>
                         </div>
                     </div>
 
@@ -91,8 +91,8 @@ const Footer = () => {
                         <h4 className="text-white font-bold uppercase tracking-widest mb-6">Newsletter</h4>
                         <p className="text-text-secondary text-sm mb-4">Subscribe for the latest drops and updates.</p>
                         <div className="relative">
-                            <input type="email" placeholder="Enter your email" className="w-full bg-white/5 border border-white/10 rounded-full py-3 px-6 text-sm text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-all" />
-                            <button className="absolute right-1 top-1 w-10 h-10 rounded-full bg-neon-green text-black flex items-center justify-center hover:bg-white transition-colors">
+                            <input type="email" placeholder="Enter your email" className="w-full bg-white/5 border border-white/10 rounded-full py-3 px-6 text-sm text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-all" aria-label="Newsletter email input" />
+                            <button className="absolute right-1 top-1 w-10 h-10 rounded-full bg-neon-green text-black flex items-center justify-center hover:bg-white transition-colors" aria-label="Subscribe to newsletter">
                                 <Send size={16} className="-ml-1 translate-x-0.5" />
                             </button>
                         </div>

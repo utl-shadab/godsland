@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { filterItems, sortItems, getItemsByCollection } from '../../utils/mockItems';
 import type { IItem } from '../../utils/mockItems';
 import { Heart, Grid, List, Eye } from 'lucide-react';
@@ -81,27 +81,24 @@ const ItemCard = ({ item, onClick }: { item: IItem; onClick: () => void }) => {
 };
 
 const ItemsGrid = ({ items: propItems, filters, onItemClick }: ItemsGridProps) => {
-    const [items, setItems] = useState<IItem[]>([]);
-    const [filteredItems, setFilteredItems] = useState<IItem[]>([]);
     const [sort, setSort] = useState('newest');
     const [page, setPage] = useState(1);
     const itemsPerPage = 20;
 
-    useEffect(() => {
-        if (propItems) {
-            setItems(propItems);
-        } else {
-            // Fallback to mock fetch if no items provided
-            const allItems = getItemsByCollection('col_123');
-            setItems(allItems);
-        }
+    const items = useMemo(() => {
+        if (propItems) return propItems;
+        return getItemsByCollection('col_123');
     }, [propItems]);
 
-    useEffect(() => {
+    const filteredItems = useMemo(() => {
         let result = filterItems(items, filters);
         result = sortItems(result, sort);
-        setFilteredItems(result);
-        setPage(1); // Reset page on filter change
+        return result;
+    }, [items, filters, sort]);
+
+    // Reset page on filter/sort change
+    useEffect(() => {
+        setPage(1);
     }, [items, filters, sort]);
 
     // Pagination

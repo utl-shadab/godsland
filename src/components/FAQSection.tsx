@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Plus, Minus } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
 
 const faqs = [
     {
@@ -27,6 +27,32 @@ const faqs = [
 
 const FAQSection = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(0);
+    const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    const toggleAccordion = (index: number) => {
+        const isOpening = activeIndex !== index;
+        const currentContent = contentRefs.current[index];
+        const previousContent = activeIndex !== null ? contentRefs.current[activeIndex] : null;
+
+        if (previousContent && !isOpening) {
+            // Closing current
+            gsap.to(previousContent, { height: 0, opacity: 0, duration: 0.3, ease: "power2.inOut" });
+            setActiveIndex(null);
+        } else if (isOpening) {
+            // Closing previous if any
+            if (previousContent) {
+                gsap.to(previousContent, { height: 0, opacity: 0, duration: 0.3, ease: "power2.inOut" });
+            }
+            // Opening new
+            if (currentContent) {
+                gsap.fromTo(currentContent,
+                    { height: 0, opacity: 0 },
+                    { height: 'auto', opacity: 1, duration: 0.3, ease: "power2.inOut" }
+                );
+            }
+            setActiveIndex(index);
+        }
+    };
 
     return (
         <section className="py-24 bg-black relative z-10">
@@ -45,7 +71,7 @@ const FAQSection = () => {
                             className={`border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white/5 border-neon-green/30' : 'bg-black hover:border-white/20'}`}
                         >
                             <button
-                                onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+                                onClick={() => toggleAccordion(index)}
                                 className="w-full flex items-center justify-between p-6 text-left"
                             >
                                 <span className={`text-lg font-bold transition-colors ${activeIndex === index ? 'text-white' : 'text-gray-300'}`}>
@@ -56,20 +82,15 @@ const FAQSection = () => {
                                 </span>
                             </button>
 
-                            <AnimatePresence>
-                                {activeIndex === index && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    >
-                                        <div className="px-6 pb-6 text-gray-400 leading-relaxed">
-                                            {faq.answer}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                            <div
+                                ref={el => { contentRefs.current[index] = el; }}
+                                className="overflow-hidden"
+                                style={{ height: activeIndex === index ? 'auto' : 0, opacity: activeIndex === index ? 1 : 0 }}
+                            >
+                                <div className="px-6 pb-6 text-gray-400 leading-relaxed">
+                                    {faq.answer}
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
