@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import FilterSidebar from '../components/FilterSidebar';
 import SearchSortBar from '../components/SearchSortBar';
@@ -10,17 +10,16 @@ import MarketplaceDashboard from '../components/MarketplaceDashboard'; // Import
 import { MOCK_NFTS, COLLECTIONS } from '../data/marketplaceData';
 
 const Explore = () => {
-    const { category, collectionId } = useParams();
+    const { category } = useParams();
     const navigate = useNavigate();
 
-    // State
-    const [selectedCategory, setSelectedCategory] = useState(category || 'all');
+    // State derived from URL or local state
+    const selectedCategory = category || 'all';
     const [searchQuery, setSearchQuery] = useState('');
     const [priceRange, setPriceRange] = useState([0, 10]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [sortOption, setSortOption] = useState('recent');
     const [viewMode, setViewMode] = useState('grid');
-    const [filteredNFTs, setFilteredNFTs] = useState<any[]>(MOCK_NFTS);
 
     // UI State
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -28,20 +27,9 @@ const Explore = () => {
     const [browseMode, setBrowseMode] = useState<'items' | 'collections'>('items');
 
     // Determine if we are in "Dashboard" mode
-    // If we are at /market (no category, no search), show Dashboard
     const isDashboard = !category && !searchQuery;
 
-    // Sync URL param with state
-    useEffect(() => {
-        if (category) {
-            setSelectedCategory(category);
-        } else {
-            setSelectedCategory('all');
-        }
-    }, [category, collectionId]);
-
     const handleCategoryChange = (newCategory: string) => {
-        setSelectedCategory(newCategory);
         if (newCategory === 'all') {
             navigate('/market');
         } else {
@@ -49,14 +37,16 @@ const Explore = () => {
         }
     };
 
-    // Filtering Logic
-    const filteredCollections = COLLECTIONS.filter(col => {
-        if (selectedCategory !== 'all' && col.categoryId !== selectedCategory) return false;
-        if (searchQuery && !col.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-        return true;
-    });
+    // Filtering Logic (Memoized)
+    const filteredCollections = useMemo(() => {
+        return COLLECTIONS.filter(col => {
+            if (selectedCategory !== 'all' && col.categoryId !== selectedCategory) return false;
+            if (searchQuery && !col.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+            return true;
+        });
+    }, [selectedCategory, searchQuery]);
 
-    useEffect(() => {
+    const filteredNFTs = useMemo(() => {
         let result = [...MOCK_NFTS];
         if (selectedCategory !== 'all') {
             result = result.filter(nft => nft.category === selectedCategory);
@@ -85,7 +75,7 @@ const Explore = () => {
                 case 'recent': default: return 0;
             }
         });
-        setFilteredNFTs(result);
+        return result;
     }, [selectedCategory, searchQuery, priceRange, selectedTypes, sortOption]);
 
     const toggleType = (type: string) => {
@@ -207,7 +197,7 @@ const Explore = () => {
                 onClose={() => setIsMobileFilterOpen(false)}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={handleCategoryChange}
-                priceRange={priceRange}
+                priceRange={priceRange as [number, number]}
                 setPriceRange={setPriceRange}
                 selectedTypes={selectedTypes}
                 toggleType={toggleType}

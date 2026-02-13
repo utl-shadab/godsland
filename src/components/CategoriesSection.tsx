@@ -116,7 +116,7 @@ const CategoriesSection = () => {
                         <div key={index} className={`relative w-[300px] h-[400px] ${cat.color} rounded-[30px] flex-shrink-0 flex flex-col items-center justify-end  transition-transform duration-300 hover:scale-[0.98]`}>
                             {/* Character Image */}
                             <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center pointer-events-none">
-                                <img src={cat.image} alt={cat.name} className="w-[90%] h-[70%] object-cover object-center rounded-t-2xl shadow-xl transform  hover:rotate-0 transition-all duration-500" />
+                                <img src={cat.image} alt={`${cat.name} category`} className="w-[90%] h-[70%] object-cover object-center rounded-t-2xl shadow-xl transform  hover:rotate-0 transition-all duration-500" loading="lazy" decoding="async" />
                             </div>
 
                             {/* Bottom Metadata Bar */}

@@ -30,6 +30,7 @@ const SearchSortBar = ({
                 {/* Mobile Filter Button */}
                 <button
                     onClick={onOpenFilter}
+                    aria-label="Filters"
                     className="lg:hidden flex items-center gap-2 px-4 py-3 bg-[#111] border border-white/10 rounded-xl text-white font-bold whitespace-nowrap hover:bg-white/10 active:scale-95 transition-all"
                 >
                     <List size={18} /> Filters
@@ -57,12 +58,14 @@ const SearchSortBar = ({
                     <button
                         className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-neon-green/20 text-neon-green' : 'text-gray-400 hover:text-white'}`}
                         onClick={() => setViewMode('grid')}
+                        aria-label="Grid view"
                     >
                         <LayoutGrid size={18} />
                     </button>
                     <button
                         className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-neon-green/20 text-neon-green' : 'text-gray-400 hover:text-white'}`}
                         onClick={() => setViewMode('list')}
+                        aria-label="List view"
                     >
                         <List size={18} />
                     </button>

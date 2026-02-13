@@ -1,23 +1,32 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import NFTCard from './NFTCard';
+import SkeletonLoader from './SkeletonLoader';
 
-const MarketplaceGrid = ({ nfts, viewMode, onItemClick }: { nfts: any[], viewMode: string, onItemClick?: (id: string) => void }) => {
+import type { NFTCardProps } from './NFTCard';
+
+const MarketplaceGrid = ({ nfts, viewMode, onItemClick }: { nfts: NFTCardProps[], viewMode: string, onItemClick?: (id: string) => void }) => {
     const gridRef = useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!gridRef.current) return;
+        // Simulate loading state for skeleton demonstration
+        const timer = setTimeout(() => setLoading(false), 800);
+        return () => clearTimeout(timer);
+    }, [nfts]);
+
+    useEffect(() => {
+        if (!gridRef.current || loading) return;
 
         // Context for scoped animations
         const ctx = gsap.context(() => {
             gsap.fromTo(".nft-card-item",
-                { opacity: 0, y: 50, scale: 0.95 },
+                { opacity: 0, y: 20 },
                 {
                     opacity: 1,
                     y: 0,
-                    scale: 1,
-                    duration: 0.6,
-                    stagger: 0.05,
+                    duration: 0.4,
+                    stagger: 0.03,
                     ease: "power2.out",
                     overwrite: 'auto'
                 }
@@ -25,9 +34,9 @@ const MarketplaceGrid = ({ nfts, viewMode, onItemClick }: { nfts: any[], viewMod
         }, gridRef);
 
         return () => ctx.revert();
-    }, [nfts]); // Re-animate when filter changes
+    }, [loading, nfts]);
 
-    if (nfts.length === 0) {
+    if (!loading && nfts.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="text-6xl mb-4">👻</div>
@@ -37,36 +46,44 @@ const MarketplaceGrid = ({ nfts, viewMode, onItemClick }: { nfts: any[], viewMod
         );
     }
 
-    return (
-        <div ref={gridRef} className={`grid gap-6 ${viewMode === 'list'
-            ? 'grid-cols-1'
-            : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}>
+    // Grid classes based on OpenSea/MagicEden density
+    const gridClasses = viewMode === 'list'
+        ? 'grid-cols-1 gap-4'
+        : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-fluid';
 
-            {nfts.map((nft, index) => (
-                <div
-                    key={nft.id}
-                    className="nft-card-item opacity-0 cursor-pointer"
-                    onClick={() => onItemClick && onItemClick(nft.id)}
-                >
-                    {viewMode === 'list' ? (
-                        <div className="flex bg-[#111] p-4 rounded-xl border border-white/10 hover:border-neon-green/50 transition-colors">
-                            <img src={nft.image} alt={nft.title} className="w-24 h-24 rounded-lg object-cover mr-6" />
-                            <div className="flex-1 flex justify-between items-center">
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-1">{nft.title}</h3>
-                                    <p className="text-gray-400 text-sm">by <span className="text-neon-green">{nft.creator}</span></p>
+    return (
+        <div ref={gridRef} className={`grid ${gridClasses}`}>
+            {loading ? (
+                <SkeletonLoader count={12} />
+            ) : (
+                nfts.map((nft) => (
+                    <div
+                        key={nft.id}
+                        className="nft-card-item opacity-0"
+                        onClick={() => nft.id && onItemClick && onItemClick(nft.id)}
+                    >
+                        {viewMode === 'list' ? (
+                            <div className="flex bg-[#111] p-4 rounded-xl border border-white/5 hover:border-neon-green/30 transition-colors cursor-pointer group">
+                                <div className="w-20 h-20 rounded-lg overflow-hidden mr-6 flex-shrink-0">
+                                    <img src={nft.image} alt={nft.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-gold-start font-bold text-lg">{nft.price}</p>
-                                    <p className="text-gray-500 text-xs">Floor: {nft.price}</p>
+                                <div className="flex-1 flex justify-between items-center min-w-0">
+                                    <div className="truncate pr-4">
+                                        <h3 className="text-lg font-bold text-white mb-1 truncate">{nft.title}</h3>
+                                        <p className="text-gray-400 text-xs truncate">Collection: <span className="text-neon-green">{nft.creator}</span></p>
+                                    </div>
+                                    <div className="text-right flex-shrink-0">
+                                        <p className="text-neon-green font-black text-lg font-mono">{nft.price}</p>
+                                        <p className="text-gray-500 text-[10px] uppercase font-bold tracking-tighter">Current Price</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <NFTCard {...nft} delay={index * 50} />
-                    )}
-                </div>
-            ))}
+                        ) : (
+                            <NFTCard {...nft} />
+                        )}
+                    </div>
+                ))
+            )}
         </div>
     );
 };

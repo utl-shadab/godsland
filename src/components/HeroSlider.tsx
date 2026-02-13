@@ -77,7 +77,7 @@ const HeroSlider = () => {
                             }}
                         >
                             <div className={`w-full h-full rounded-2xl overflow-hidden border-2 transition-all duration-300 ${isActive ? 'border-neon-green/50 shadow-[0_0_20px_rgba(0,255,163,0.2)] hover:shadow-[0_0_50px_rgba(0,255,163,0.6)] hover:border-neon-green' : 'border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]'} bg-black`}>
-                                <img src={img} alt="NFT" className="w-full h-full object-cover" />
+                                <img src={img} alt={`Featured NFT ${index + 1}`} className="w-full h-full object-cover" loading={isActive ? "eager" : "lazy"} decoding="async" />
                                 {isActive && (
                                     <div className="absolute bottom-6 left-6 right-6 p-4 bg-black/60 backdrop-blur-md rounded-xl border border-white/10">
                                         <h3 className="text-white font-bold uppercase tracking-wider text-sm">Divine Artifact #{index + 1}</h3>

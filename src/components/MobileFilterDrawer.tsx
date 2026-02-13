@@ -4,7 +4,7 @@ import { CATEGORIES } from '../data/marketplaceData';
 import { gsap } from 'gsap';
 
 // Reusing the DualRangeSlider component logic locally for simplicity or we could export it
-const DualRangeSlider = ({ range, setRange, min = 0, max = 10 }: any) => {
+const DualRangeSlider = ({ range, setRange, min = 0, max = 10 }: { range: [number, number], setRange: (val: [number, number]) => void, min?: number, max?: number }) => {
     const handleMinChange = (e: any) => {
         const val = Math.min(Number(e.target.value), range[1] - 0.5);
         setRange([val, range[1]]);
@@ -45,6 +45,17 @@ const DualRangeSlider = ({ range, setRange, min = 0, max = 10 }: any) => {
     );
 };
 
+interface MobileFilterDrawerProps {
+    isOpen: boolean;
+    onClose: () => void;
+    selectedCategory: string;
+    setSelectedCategory: (cat: string) => void;
+    priceRange: [number, number];
+    setPriceRange: (range: [number, number]) => void;
+    selectedTypes: string[];
+    toggleType: (type: string) => void;
+}
+
 const MobileFilterDrawer = ({
     isOpen,
     onClose,
@@ -54,7 +65,7 @@ const MobileFilterDrawer = ({
     setPriceRange,
     selectedTypes,
     toggleType
-}: any) => {
+}: MobileFilterDrawerProps) => {
     const [openSections, setOpenSections] = useState({
         categories: true,
         price: true,
@@ -103,14 +114,14 @@ const MobileFilterDrawer = ({
 
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-white/10">
-                    <h3 className="text-xl font-bold text-white">Filters</h3>
-                    <button onClick={handleClose} className="p-2 bg-white/5 rounded-full hover:bg-white/10">
+                    <h3 className="text-xl font-bold text-white uppercase tracking-tight">Filters</h3>
+                    <button onClick={handleClose} className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors" aria-label="Close filters">
                         <X size={20} className="text-white" />
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 overflow-y-auto flex-1 pb-24">
+                <div className="p-6 overflow-y-auto flex-1 pb-32">
 
                     {/* Categories */}
                     <div className="mb-6">
@@ -118,14 +129,14 @@ const MobileFilterDrawer = ({
                             className="flex items-center justify-between w-full text-left mb-4"
                             onClick={() => toggleSection('categories')}
                         >
-                            <span className="font-bold text-white uppercase text-sm">Categories</span>
+                            <span className="font-bold text-white uppercase text-xs tracking-widest">Categories</span>
                             {openSections.categories ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
 
                         {openSections.categories && (
                             <div className="grid grid-cols-2 gap-2">
                                 <button
-                                    className={`py-3 px-2 rounded-lg text-sm text-center border ${selectedCategory === 'all' ? 'bg-neon-green/20 border-neon-green text-neon-green font-bold' : 'border-white/10 text-gray-400'}`}
+                                    className={`py-3 px-2 rounded-lg text-sm text-center border transition-all ${selectedCategory === 'all' ? 'bg-neon-green/20 border-neon-green text-neon-green font-bold' : 'border-white/10 text-gray-400'}`}
                                     onClick={() => setSelectedCategory('all')}
                                 >
                                     All
@@ -133,7 +144,7 @@ const MobileFilterDrawer = ({
                                 {CATEGORIES.map(cat => (
                                     <button
                                         key={cat.id}
-                                        className={`py-3 px-2 rounded-lg text-sm text-center border ${selectedCategory === cat.id ? 'bg-neon-green/20 border-neon-green text-neon-green font-bold' : 'border-white/10 text-gray-400'}`}
+                                        className={`py-3 px-2 rounded-lg text-sm text-center border transition-all ${selectedCategory === cat.id ? 'bg-neon-green/20 border-neon-green text-neon-green font-bold' : 'border-white/10 text-gray-400'}`}
                                         onClick={() => setSelectedCategory(cat.id)}
                                     >
                                         {cat.name}
@@ -143,7 +154,7 @@ const MobileFilterDrawer = ({
                         )}
                     </div>
 
-                    <hr className="border-white/10 my-6" />
+                    <hr className="border-white/5 my-6" />
 
                     {/* Price Range */}
                     <div className="mb-6">
@@ -151,7 +162,7 @@ const MobileFilterDrawer = ({
                             className="flex items-center justify-between w-full text-left mb-4"
                             onClick={() => toggleSection('price')}
                         >
-                            <span className="font-bold text-white uppercase text-sm">Price Range</span>
+                            <span className="font-bold text-white uppercase text-xs tracking-widest">Price Range</span>
                             {openSections.price ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
 
@@ -166,7 +177,7 @@ const MobileFilterDrawer = ({
                         )}
                     </div>
 
-                    <hr className="border-white/10 my-6" />
+                    <hr className="border-white/5 my-6" />
 
                     {/* NFT Type */}
                     <div className="mb-6">
@@ -174,21 +185,21 @@ const MobileFilterDrawer = ({
                             className="flex items-center justify-between w-full text-left mb-4"
                             onClick={() => toggleSection('type')}
                         >
-                            <span className="font-bold text-white uppercase text-sm">NFT Type</span>
+                            <span className="font-bold text-white uppercase text-xs tracking-widest">NFT Type</span>
                             {openSections.type ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
 
                         {openSections.type && (
                             <div className="flex flex-col gap-3">
                                 {['Basic', 'Special', 'Premium', 'Legendary'].map(type => (
-                                    <label key={type} className="flex items-center gap-3 cursor-pointer py-2">
+                                    <label key={type} className="flex items-center gap-3 cursor-pointer py-2 group">
                                         <div
-                                            className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedTypes.includes(type) ? 'bg-neon-green border-neon-green' : 'border-white/20 bg-transparent'}`}
+                                            className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedTypes.includes(type) ? 'bg-neon-green border-neon-green' : 'border-white/20 bg-transparent group-hover:border-white/40'}`}
                                             onClick={() => toggleType(type)}
                                         >
                                             {selectedTypes.includes(type) && <Check size={14} className="text-black" />}
                                         </div>
-                                        <span className={`text-base ${selectedTypes.includes(type) ? 'text-white' : 'text-gray-400'}`}>{type}</span>
+                                        <span className={`text-base font-medium transition-colors ${selectedTypes.includes(type) ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'}`}>{type}</span>
                                     </label>
                                 ))}
                             </div>
@@ -197,13 +208,13 @@ const MobileFilterDrawer = ({
 
                 </div>
 
-                {/* Footer Actions */}
-                <div className="p-6 border-t border-white/10 bg-[#111] absolute bottom-0 w-full">
+                {/* Footer Actions with Safe Area Inset */}
+                <div className="p-6 border-t border-white/10 bg-[#111] absolute bottom-0 w-full pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
                     <button
                         onClick={handleClose}
-                        className="w-full py-4 bg-neon-green text-black font-bold uppercase tracking-widest rounded-xl hover:bg-white transition-colors"
+                        className="w-full py-4 bg-neon-green text-black font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-[0_0_20px_rgba(0,255,163,0.3)]"
                     >
-                        Show Results
+                        Apply Filters
                     </button>
                 </div>
             </div>

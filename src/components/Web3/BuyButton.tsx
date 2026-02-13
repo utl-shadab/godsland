@@ -1,4 +1,5 @@
-
+import { useState } from 'react';
+import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import type { IItem } from '../../utils/mockItems';
 import { MOCK_WALLET } from '../../utils/mockWallet';
 
@@ -6,36 +7,100 @@ interface BuyButtonProps {
     item: IItem;
     onSuccess?: () => void;
     onError?: (error: string) => void;
-    onBuy: () => void; // Trigger the confirmation dialog in parent
+    onBuy?: () => void;
 }
 
-const BuyButton = ({ item, onBuy }: BuyButtonProps) => {
+const BuyButton = ({ item, onSuccess, onError, onBuy }: BuyButtonProps) => {
+    const [status, setStatus] = useState<'idle' | 'pending' | 'success' | 'failed'>('idle');
     const isListed = item.isListed;
 
-    const handleClick = (e: React.MouseEvent) => {
+    const handleBuy = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!MOCK_WALLET.isConnected) {
-            alert("Connect wallet first (Mock: Assume connected)");
+
+        if (onBuy) {
+            onBuy();
             return;
         }
-        onBuy();
+
+        if (!MOCK_WALLET.isConnected) {
+            alert("Please connect your wallet first.");
+            return;
+        }
+
+        setStatus('pending');
+
+        // Simulate blockchain transaction
+        try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Randomly succeed or fail for demo
+            if (Math.random() > 0.1) {
+                setStatus('success');
+                onSuccess?.();
+                // Reset after 3 seconds
+                setTimeout(() => setStatus('idle'), 3000);
+            } else {
+                throw new Error("Transaction rejected by network");
+            }
+        } catch (err: any) {
+            setStatus('failed');
+            onError?.(err.message);
+            setTimeout(() => setStatus('idle'), 3000);
+        }
     };
 
     if (!isListed) {
         return (
-            <button disabled className="w-full py-3 bg-slate-800 text-gray-400 font-bold rounded-lg cursor-not-allowed opacity-50">
+            <button disabled className="w-full py-4 bg-white/5 text-gray-500 font-black uppercase tracking-widest rounded-xl cursor-not-allowed opacity-50 border border-white/5">
                 Not For Sale
             </button>
         );
     }
 
+    const buttonStyles = {
+        idle: "bg-neon-green text-black hover:bg-white hover:shadow-[0_0_20px_#00ffa366] hover:scale-[1.02]",
+        pending: "bg-white/10 text-white cursor-wait",
+        success: "bg-green-500 text-white cursor-default",
+        failed: "bg-red-500 text-white cursor-default"
+    };
+
     return (
-        <button
-            onClick={handleClick}
-            className="w-full py-3 bg-neon-green text-black font-bold rounded-lg hover:bg-white transition-all shadow-[0_0_15px_rgba(0,255,163,0.3)] hover:scale-[1.02]"
-        >
-            Buy Now for {item.price} ETH
-        </button>
+        <div className="w-full flex flex-col gap-2 pb-[env(safe-area-inset-bottom)]">
+            <button
+                onClick={handleBuy}
+                disabled={status !== 'idle'}
+                className={`w-full py-4 font-black uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent ${buttonStyles[status]}`}
+                aria-label={status === 'idle' ? `Buy ${item.name} for ${item.price} ETH` : status}
+            >
+                {status === 'idle' && (
+                    <span>Buy Now — {item.price} ETH</span>
+                )}
+                {status === 'pending' && (
+                    <>
+                        <Loader2 className="animate-spin" size={20} />
+                        <span>Confirming...</span>
+                    </>
+                )}
+                {status === 'success' && (
+                    <>
+                        <CheckCircle2 size={20} />
+                        <span>Purchased!</span>
+                    </>
+                )}
+                {status === 'failed' && (
+                    <>
+                        <AlertCircle size={20} />
+                        <span>Failed</span>
+                    </>
+                )}
+            </button>
+
+            {status === 'pending' && (
+                <p className="text-[10px] text-center text-gray-500 animate-pulse uppercase font-bold tracking-widest">
+                    Processing transaction on blockchain...
+                </p>
+            )}
+        </div>
     );
 };
 

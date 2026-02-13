@@ -19,16 +19,28 @@
   --background-image-gradient-gold: linear-gradient(135deg, var(--color-gold-start), var(--color-gold-end));
   --background-image-gradient-card: linear-gradient(180deg, rgba(11, 31, 26, 0.6) 0%, rgba(0, 0, 0, 0.9) 100%);
 
-  /* Typography */
+  /* Typography - Fluid */
   --font-primary: 'DM Sans', sans-serif;
+  --font-size-xs: clamp(0.7rem, 1.5vw, 0.75rem);
+  --font-size-sm: clamp(0.8rem, 1.8vw, 0.875rem);
+  --font-size-base: clamp(0.9rem, 2vw, 1rem);
+  --font-size-lg: clamp(1rem, 2.2vw, 1.125rem);
+  --font-size-xl: clamp(1.1rem, 2.5vw, 1.25rem);
+  --font-size-2xl: clamp(1.25rem, 3vw, 1.5rem);
+  --font-size-3xl: clamp(1.5rem, 4vw, 1.875rem);
+  --font-size-4xl: clamp(2rem, 5vw, 2.25rem);
+  --font-size-5xl: clamp(2.5rem, 7vw, 3rem);
 
   /* Effects */
   --box-shadow-glow-neon: 0 0 20px rgba(0, 255, 163, 0.3);
   --box-shadow-glow-gold: 0 0 15px rgba(212, 175, 55, 0.3);
   --backdrop-blur-glass: blur(10px);
 
-  /* Layout */
+  /* Layout - Fluid Gaps & Padding */
   --spacing-header-height: 80px;
+  --spacing-fluid-gap: clamp(0.5rem, 2vw, 1rem);
+  --spacing-fluid-padding: clamp(1rem, 5vw, 2.5rem);
+  --spacing-section-py: clamp(3rem, 10vh, 6rem);
 }
 
 /* Base Styles */
@@ -37,6 +49,7 @@ body {
   @apply w-full h-full bg-black text-text-primary font-primary overflow-x-hidden;
   /* background-image: var(--background-image-gradient-bg); */
   background-attachment: fixed;
+  font-size: var(--font-size-base);
 }
 
 #root {
@@ -52,6 +65,10 @@ h5,
 h6 {
   @apply text-white font-bold tracking-tight;
 }
+
+h1 { font-size: var(--font-size-5xl); }
+h2 { font-size: var(--font-size-4xl); }
+h3 { font-size: var(--font-size-3xl); }
 
 @keyframes scrollLine {
   0% {
@@ -112,3 +129,8 @@ h6 {
 .backface-hidden {
   backface-visibility: hidden;
 }
+
+/* Fluid spacing utilities */
+.p-fluid { padding: var(--spacing-fluid-padding); }
+.gap-fluid { gap: var(--spacing-fluid-gap); }
+.py-section { padding-top: var(--spacing-section-py); padding-bottom: var(--spacing-section-py); }

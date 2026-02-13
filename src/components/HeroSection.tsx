@@ -2,8 +2,10 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import { Search, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { useLoading } from '../context/LoadingContext';
 import HeroSlider from './HeroSlider';
+import { TRENDING_COLLECTIONS } from '../data/marketplaceData';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,86 +15,66 @@ const HeroSection = () => {
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const searchRef = useRef<HTMLDivElement>(null);
+    const trendingRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // Animation Effect
     useEffect(() => {
-        if (isLoading) return; // Wait for loading to finish
+        if (isLoading) return;
 
         const tl = gsap.timeline();
 
         // Initial Set
-        gsap.set(titleRef.current, { y: '100%' });
-        gsap.set(subtitleRef.current, { y: '100%', opacity: 0 });
+        gsap.set([titleRef.current, subtitleRef.current], { y: 50, opacity: 0 });
+        gsap.set(searchRef.current, { scale: 0.9, opacity: 0 });
         gsap.set(ctaRef.current, { y: 20, opacity: 0 });
-        gsap.set(scrollRef.current, { opacity: 0 });
-        gsap.set('#hero-slider', { opacity: 0, y: 50 }); // Target ID from HeroSlider
+        gsap.set(trendingRef.current, { y: 30, opacity: 0 });
+        gsap.set('#hero-slider', { opacity: 0, y: 50 });
 
-        // Sequence: Header is handled in Header.tsx (delays ~800ms)
-        // We start Hero animations after a slight delay to allow header to start appearing
         const startDelay = 0.5;
 
-        // Step 3: Hero Title Reveal
         tl.to(titleRef.current, {
-            clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)',
             y: 0,
-            duration: 1.5,
+            opacity: 1,
+            duration: 1.2,
             ease: 'power4.out',
             delay: startDelay,
         })
-            // Step 4: Subtitle Reveal
-            .to(subtitleRef.current, {
-                clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)',
-                y: 0,
-                opacity: 1,
-                duration: 1.0,
-                ease: 'power3.out',
-            }, '-=1.0')
-            // Step 5: Buttons Reveal
-            .to(ctaRef.current, {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: 'back.out(1.7)',
-            }, '-=0.5')
-            // Step 6: 3D Slider Entrance
-            .to('#hero-slider', {
-                opacity: 1,
-                y: 0,
-                duration: 1.2,
-                ease: 'power2.out',
-            }, '-=0.4')
+        .to(subtitleRef.current, {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            ease: 'power3.out',
+        }, '-=0.8')
+        .to(searchRef.current, {
+            scale: 1,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+        }, '-=0.6')
+        .to(ctaRef.current, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+        }, '-=0.4')
+        .to('#hero-slider', {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power2.out',
+        }, '-=0.6')
+        .to(trendingRef.current, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+        }, '-=0.8');
 
-            .to(scrollRef.current, {
-                opacity: 1,
-                duration: 1,
-            }, '-=0.5');
-
-        // Continuous "Flow" animation inside text
-        gsap.to(titleRef.current, {
-            backgroundPosition: '200% center',
-            duration: 4,
-            ease: 'linear',
-            repeat: -1,
-        });
-
-        /* Parallax Effect */
-        if (containerRef.current) {
-            gsap.to(containerRef.current, {
-                backgroundPosition: '50% 50%',
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true,
-                },
-            });
-        }
     }, [isLoading]);
 
-    // Particle System
+    // Particle System (Keep existing)
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -114,7 +96,7 @@ const HeroSection = () => {
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
                 size: Math.random() * 2,
-                color: Math.random() > 0.5 ? 'rgba(52, 228, 21, 0.93)' : 'rgba(51, 255, 0, 0.5)'
+                color: Math.random() > 0.5 ? 'rgba(0, 211, 44, 0.4)' : 'rgba(0, 211, 44, 0.2)'
             });
         }
 
@@ -157,56 +139,95 @@ const HeroSection = () => {
     }, []);
 
     return (
-        <section className="relative w-full min-h-screen flex flex-col pt-32 pb-12 items-center overflow-hidden px-8 z-10 bg-black" ref={containerRef}>
-            {/* <div className="absolute top-0 left-0 w-full h-full bg-[url('/bg.avif')] bg-cover bg-center opacity-60 mix-blend-screen pointer-events-none -z-10"></div> */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/80 via-transparent to-black/90 -z-10"></div>
-            <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full -z-5 opacity-60 pointer-events-none" />
+        <section className="relative w-full min-h-screen flex flex-col pt-32 pb-24 items-center overflow-hidden z-10 bg-black px-fluid" ref={containerRef}>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-neon-green/5 via-transparent to-black -z-10"></div>
+            <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full -z-5 opacity-40 pointer-events-none" />
 
             <div className="text-center max-w-[1400px] w-full z-20 flex flex-col items-center">
-                <div className="overflow-hidden mb-2">
-                    <h1
-                        className="text-[clamp(3.5rem,8vw,5rem)] font-black uppercase leading-[0.85] tracking-tighter text-[#00d32c]"
-                        style={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', transform: 'translateY(100px)' }}
-                        ref={titleRef}
-                    >
-                        Unique Collection
-                        <span className="block mt-2">
-                            Of NFT Arts
-                        </span>
-                    </h1>
+                {/* Headline */}
+                <h1
+                    className="text-[clamp(2.5rem,10vw,5.5rem)] font-black uppercase leading-[0.9] tracking-tighter text-white mb-6"
+                    ref={titleRef}
+                >
+                    Discover, Collect <br />
+                    <span className="text-neon-green">& Sell</span> Rare NFTs
+                </h1>
+
+                {/* Subtitle */}
+                <p
+                    className="max-w-2xl text-lg md:text-xl text-gray-400 font-medium mb-10"
+                    ref={subtitleRef}
+                >
+                    The world's first and largest digital marketplace for crypto collectibles and non-fungible tokens (NFTs).
+                </p>
+
+                {/* Search Bar (OpenSea Style) */}
+                <div
+                    ref={searchRef}
+                    className="w-full max-w-2xl relative mb-8 group"
+                >
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-neon-green transition-colors" size={20} />
+                    <input
+                        type="text"
+                        placeholder="Search items, collections, and accounts"
+                        className="w-full py-5 pl-16 pr-6 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-neon-green/50 focus:bg-white/10 transition-all text-lg shadow-2xl"
+                    />
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-gray-500 font-bold">
+                        <span>/</span>
+                    </div>
                 </div>
 
-                <div className="overflow-hidden mb-8 max-w-2xl">
-                    <p
-                        className="text-[clamp(1rem,1.5vw,1.2rem)] text-text-secondary font-medium leading-relaxed"
-                        style={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', transform: 'translateY(50px)' }}
-                        ref={subtitleRef}
-                    >
-                        The largest collection of nft artifacts among all marketplaces. Discover, collect, and sell extraordinary NFTs.
-                    </p>
-                </div>
-
-                <div className="flex gap-6 justify-center mt-2 opacity-0 transform translate-y-5" ref={ctaRef}>
-                    <Link to="/explore" className="group relative py-3 px-8 text-sm font-bold uppercase tracking-widest rounded-full overflow-hidden bg-neon-green text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,163,0.5)] hover:scale-105">
-                        <span className="relative z-10">Explore Now</span>
+                {/* CTAs */}
+                <div className="flex gap-4 justify-center mb-16" ref={ctaRef}>
+                    <Link to="/explore" className="py-4 px-10 bg-neon-green text-black font-black uppercase tracking-widest rounded-xl hover:bg-white hover:shadow-[0_0_30px_rgba(0,255,163,0.4)] transition-all">
+                        Explore
                     </Link>
-                    {/* <Link to="/create" className="group relative py-3 px-8 text-sm font-bold uppercase tracking-widest rounded-full overflow-hidden border border-white/20 text-white transition-all duration-300 hover:bg-white hover:text-black hover:scale-105">
-                        <span className="relative z-10">Create NFT</span>
-                    </Link> */}
+                    <Link to="/create" className="py-4 px-10 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
+                        Create
+                    </Link>
                 </div>
 
-                {/* 3D Slider Component */}
-                <HeroSlider />
-            </div>
+                {/* Trending Collections (MagicEden Style) */}
+                <div ref={trendingRef} className="w-full max-w-5xl">
+                    <div className="flex items-center gap-2 mb-6 justify-center md:justify-start">
+                        <TrendingUp size={20} className="text-neon-green" />
+                        <h3 className="text-xl font-bold uppercase tracking-tighter">Trending Collections</h3>
+                    </div>
 
-            {/* <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0" ref={scrollRef}>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-white/30">Scroll</span>
-                <ChevronDown className="text-neon-green animate-bounce" size={20} />
-            </div> */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {TRENDING_COLLECTIONS.map((col) => (
+                            <Link key={col.id} to={`/collections/${col.id}`} className="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 hover:border-white/10 transition-all group">
+                                <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+                                    <img src={col.image} alt={col.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div className="text-left min-w-0">
+                                    <div className="flex items-center gap-1 mb-1">
+                                        <h4 className="text-sm font-bold truncate">{col.name}</h4>
+                                        {col.verified && <CheckCircle2 size={12} className="text-blue-400 fill-blue-400/20" />}
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div>
+                                            <p className="text-[10px] text-gray-500 uppercase font-bold">Floor</p>
+                                            <p className="text-xs font-mono text-neon-green font-bold">{col.floorPrice}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] text-gray-500 uppercase font-bold">24h Vol</p>
+                                            <p className="text-xs font-mono text-white font-bold">{col.volume24h}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
+                {/* 3D Slider */}
+                <div className="mt-20 w-full">
+                    <HeroSlider />
+                </div>
+            </div>
         </section>
     );
 };
-
-// import { ChevronDown } from 'lucide-react';
 
 export default HeroSection;
