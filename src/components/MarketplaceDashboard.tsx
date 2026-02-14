@@ -77,7 +77,7 @@ const DashboardCard = ({ item, type, onClick }: any) => {
     );
 };
 
-const MarketplaceDashboard = ({ onCategorySelect, onCollectionSelect }: any) => {
+const MarketplaceDashboard = ({ onCategorySelect }: any) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
@@ -134,7 +134,7 @@ const MarketplaceDashboard = ({ onCategorySelect, onCollectionSelect }: any) => 
                             key={item.id}
                             item={item}
                             type="pack"
-                            onClick={() => onCollectionSelect(item)} /* Mocking interaction */
+                            onClick={() => navigate(`/collection/${item.id}`)} /* Mocking interaction */
                         />
                     ))}
                 </div>
@@ -149,7 +149,7 @@ const MarketplaceDashboard = ({ onCategorySelect, onCollectionSelect }: any) => 
                             key={item.id}
                             item={item}
                             type="mover"
-                            onClick={() => onCollectionSelect(item)}
+                            onClick={() => navigate(`/collection/${item.id}`)}
                         />
                     ))}
                 </div>
@@ -164,7 +164,7 @@ const MarketplaceDashboard = ({ onCategorySelect, onCollectionSelect }: any) => 
                             key={item.id}
                             item={item}
                             type="new"
-                            onClick={() => onCollectionSelect(item)}
+                            onClick={() => navigate(`/collection/${item.id}`)}
                         />
                     ))}
                 </div>
@@ -179,7 +179,7 @@ const MarketplaceDashboard = ({ onCategorySelect, onCollectionSelect }: any) => 
                             key={item.id}
                             item={item}
                             type="drop"
-                            onClick={() => onCollectionSelect(item)}
+                            onClick={() => navigate(`/collection/${item.id}`)}
                         />
                     ))}
                 </div>

@@ -39,7 +39,7 @@ const CollectionStats = ({ collection }: CollectionStatsProps) => {
     };
 
     return (
-        <div className="sticky top-20 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10 w-full overflow-x-auto scrollbar-hide">
+        <div className="z-40 bg-black/90 backdrop-blur-xl border-b border-white/10 w-full overflow-x-auto scrollbar-hide">
             <div className="max-w-[1600px] mx-auto flex items-center min-w-max px-4 md:px-0">
                 <StatItem
                     label="Floor"

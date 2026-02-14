@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { COLLECTIONS, MOCK_NFTS } from '../data/marketplaceData';
-import { useLoading } from '../context/LoadingContext';
 import CollectionHero from '../components/Collections/CollectionHero';
 import CollectionStats from '../components/Collections/CollectionStats';
 import FilterPanel from '../components/Filters/FilterPanel';
@@ -13,7 +12,6 @@ import ActivityTab from '../components/Collections/ActivityTab';
 const CollectionDetails = () => {
     const { category, collectionId } = useParams<{ category: string; collectionId: string }>();
     const navigate = useNavigate();
-    const { setIsLoading } = useLoading();
 
     const [collection, setCollection] = useState<any>(null); // Use existing shape or import mapped type
     const [collectionItems, setCollectionItems] = useState<any[]>([]);
@@ -21,7 +19,6 @@ const CollectionDetails = () => {
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
     useEffect(() => {
-        setIsLoading(true);
         // Simulate API call
         setTimeout(() => {
             if (collectionId) {
@@ -54,9 +51,8 @@ const CollectionDetails = () => {
                     // navigate('/market'); // Fallback
                 }
             }
-            setIsLoading(false);
         }, 500);
-    }, [category, collectionId, setIsLoading, navigate]);
+    }, [category, collectionId, navigate]);
 
     if (!collection) return <div className="min-h-screen bg-black text-white pt-24 text-center">Loading...</div>;
 
