@@ -34,8 +34,10 @@ const MintingTechniques = () => {
             ease: "none",
             scrollTrigger: {
                 trigger: sectionRef.current,
-                start: "top center",
-                end: "bottom center",
+                // start: "top center",
+                // start: "top 95%",
+                start: "top+=5% bottom",
+                end: "bottom bottom",
                 scrub: 1.5,
             }
         });
@@ -70,12 +72,12 @@ const MintingTechniques = () => {
                 <p className="text-gray-400 text-lg">4 Simple Steps to create your legacy</p>
             </div>
 
-            <div className="w-full relative h-[600px]" ref={containerRef}>
+            <div className="w-full relative h-[650px] hidden md:block " ref={containerRef}>
 
                 {/* Wave Line Container */}
-                <div className="absolute inset-0 w-full h-full">
+                <div className="absolute inset-0 w-full h-full ">
                     {/* SVG Wave */}
-                    <svg className="w-full h-full visible" preserveAspectRatio="none" viewBox="0 0 1440 600">
+                    <svg className="w-full h-full visible py-4" preserveAspectRatio="none" viewBox="0 0 1440 680">
                         <defs>
                             <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%" stopColor="rgba(0, 255, 163, 0)" />
@@ -84,7 +86,8 @@ const MintingTechniques = () => {
                                 <stop offset="100%" stopColor="rgba(0, 255, 163, 0)" />
                             </linearGradient>
                             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="15" result="coloredBlur" />
+                                {/* <feGaussianBlur stdDeviation="15" result="coloredBlur" /> */}
+                                <feGaussianBlur stdDeviation="25" result="coloredBlur" />
                                 <feMerge>
                                     <feMergeNode in="coloredBlur" />
                                     <feMergeNode in="SourceGraphic" />
@@ -105,7 +108,7 @@ const MintingTechniques = () => {
                             d="M -100 600 C 200 600, 300 100, 500 100 S 800 600, 1000 600 S 1300 100, 1540 100"
                             fill="none"
                             stroke="url(#neonGradient)"
-                            strokeWidth="8"
+                            strokeWidth="16"
                             filter="url(#glow)"
                         />
                     </svg>

@@ -53,6 +53,10 @@ h6 {
   @apply text-white font-bold tracking-tight;
 }
 
+button {
+  cursor: pointer;
+}
+
 @keyframes scrollLine {
   0% {
     transform: translateY(-100%);
@@ -115,10 +119,12 @@ h6 {
 
 /* Scrollbar Hide Utility */
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
