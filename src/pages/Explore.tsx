@@ -97,7 +97,7 @@ const Explore = () => {
 
 
     // Handle clicking a Dashboard Item -> Opens Modal or Navigates to Browse
-    const handleDashboardItemClick = (item: any) => {
+    const handleDashboardItemClick = () => {
         // If it's a collection-like item, open modal via route
         // We use 'all' as category for generic dashboard items
         // navigate(`/market/all/${item.id}`);
