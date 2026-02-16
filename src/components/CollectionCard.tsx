@@ -1,51 +1,58 @@
+import { BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const CollectionCard = ({ collection }: { collection: any }) => {
+interface CollectionCardProps {
+    collection: any; // Ideally strictly typed
+}
+
+const CollectionCard = ({ collection }: CollectionCardProps) => {
     const navigate = useNavigate();
 
+    // Mock data for "Top Movers" look if missing, or use collection data
+    // Assuming collection has 'change' or we mock it for the demo
+    const percentChange = collection.change || "+" + (Math.random() * 100).toFixed(1) + "%";
+    const isPositive = !percentChange.startsWith('-');
+
     const handleClick = () => {
-        // Navigate to the collection route, which serves as the "modal trigger"
-        // Route: /market/:category/:collectionId
-        navigate(`/market/${collection.categoryId}/${collection.id}`);
+        navigate(`/collection/${collection.id}`);
     };
 
     return (
         <div
             onClick={handleClick}
-            className="group relative rounded-2xl overflow-hidden bg-[#111] border border-white/10 cursor-pointer hover:border-neon-green/50 hover:shadow-[0_0_20px_rgba(0,255,163,0.15)] transition-all duration-300 hover:-translate-y-1"
+            className="group relative rounded-xl overflow-hidden aspect-[16/10] bg-[#111] border border-white/5 cursor-pointer isolate"
         >
-            {/* Banner */}
-            <div className="h-32 overflow-hidden relative">
-                <img
-                    src={`https://picsum.photos/seed/${collection.id}-banner/600/300`}
-                    alt={collection.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-            </div>
+            {/* Background Image */}
+            <img
+                src={collection.banner || collection.image || `https://picsum.photos/seed/${collection.id}/600/400`}
+                alt={collection.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
 
-            {/* Avatar - Centered overlapping */}
-            <div className="absolute top-20 left-1/2 -translate-x-1/2 w-20 h-20 rounded-xl border-4 border-[#111] overflow-hidden shadow-lg">
-                <img
-                    src={`https://picsum.photos/seed/${collection.id}/200/200`}
-                    alt={collection.name}
-                    className="w-full h-full object-cover"
-                />
-            </div>
+            {/* Gradient Overlay - Stronger at bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
 
-            {/* Info */}
-            <div className="pt-12 pb-6 px-4 text-center">
-                <h3 className="text-lg font-bold text-white mb-1 group-hover:text-neon-green transition-colors">{collection.name}</h3>
-                <div className="flex justify-center gap-4 text-xs text-gray-400 mt-3">
-                    <div className="flex flex-col">
-                        <span className="uppercase tracking-wider text-[10px]">Floor</span>
-                        <span className="text-white font-bold">{collection.floorPrice}</span>
-                    </div>
-                    <div className="w-[1px] bg-white/10"></div>
-                    <div className="flex flex-col">
-                        <span className="uppercase tracking-wider text-[10px]">Volume</span>
-                        <span className="text-white font-bold">125 ETH</span>
-                    </div>
+            {/* Hover visual feedback (optional border glow) */}
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-neon-green/50 rounded-xl transition-colors z-20 pointer-events-none"></div>
+
+            {/* Content (Bottom Overlay) */}
+            <div className="absolute bottom-0 left-0 w-full p-4 flex flex-col justify-end z-20">
+                {/* Title & Verified Badge */}
+                <div className="flex items-center gap-1.5 mb-1">
+                    <h3 className="text-white font-bold text-lg tracking-wide truncate drop-shadow-md">
+                        {collection.name}
+                    </h3>
+                    <BadgeCheck size={18} className="text-blue-500 fill-blue-500/10" />
+                </div>
+
+                {/* Stats Row */}
+                <div className="flex items-center gap-3 text-sm font-medium">
+                    <span className="text-gray-300 text-xs uppercase tracking-wider">
+                        Floor: <span className="text-white font-bold text-sm ml-1">{collection.floorPrice || "0.15 ETH"}</span>
+                    </span>
+                    <span className={`text-xs font-bold ${isPositive ? 'text-neon-green' : 'text-red-500'}`}>
+                        {percentChange}
+                    </span>
                 </div>
             </div>
         </div>

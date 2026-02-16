@@ -4,11 +4,10 @@ import { ChevronDown, Wallet, Star, User, Settings, LogOut, Grid } from 'lucide-
 import gsap from 'gsap';
 import MegaMenu from './MegaMenu';
 import MobileMenu from './MobileMenu';
-import { useLoading } from '../context/LoadingContext';
+
 
 
 const Header = () => {
-    const { isLoading } = useLoading();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -21,9 +20,9 @@ const Header = () => {
         setIsMegaMenuOpen(!isMegaMenuOpen);
     };
 
-    // Handle Loading State
+    // Handle Animation on Load
     useEffect(() => {
-        if (!isLoading && headerRef.current) {
+        if (headerRef.current) {
             // Animate header in on load
             gsap.fromTo(
                 headerRef.current,
@@ -31,7 +30,7 @@ const Header = () => {
                 { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
             );
         }
-    }, [isLoading]);
+    }, []);
 
     // Handle GSAP Animation based on visibility
     useEffect(() => {
@@ -53,8 +52,6 @@ const Header = () => {
     }, [isVisible]);
 
     useEffect(() => {
-        if (isLoading) return;
-
         lastScrollY.current = window.scrollY;
 
         const handleScroll = () => {
@@ -86,24 +83,17 @@ const Header = () => {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [isLoading]);
+    }, []);
 
     return (
         <>
             <header
                 ref={headerRef}
-                className={` w-full h-20 z-50 px-8 flex justify-between items-center transition-colors duration-300 ${isScrolled
-                    ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30'
-                    : 'bg-transparent border-transparent'
-                    }`}
-            >
-                {/* <header
-                ref={headerRef}
                 className={`fixed top-0 left-0 w-full h-20 z-50 px-8 flex justify-between items-center transition-colors duration-300 ${isScrolled
                     ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30 shadow-[0_0_20px_rgba(0,255,163,0.15)]'
                     : 'bg-transparent border-transparent'
                     }`}
-            > */}
+            >
                 <div className="text-2xl font-bold uppercase tracking-widest text-white flex items-center gap-2 group z-[102]">
                     <Link to="/" className="flex items-center gap-1">
                         Gods<span className={`transition-all duration-300 ${isScrolled ? 'text-neon-green' : 'text-white group-hover:text-neon-green'}`}>land</span>
@@ -121,7 +111,7 @@ const Header = () => {
                     <Link to="/club" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         NFT Club
                     </Link>
-                    <Link to="/collections" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
+                    <Link to="/market" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Collections
                     </Link>
                     <div

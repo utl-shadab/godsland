@@ -1,27 +1,65 @@
-
+import { Layers } from 'lucide-react';
 
 interface NFTCardProps {
     title: string;
-    creator: string;
-    price: string;
+    creator?: string; // Optional now
+    price: string; // e.g. "0.118 RON"
     image: string;
-    delay?: number; // For staggered animation
+    lastSale?: string; // New prop
+    rank?: number | string; // New prop
+    onBuy?: () => void;
+    onClick?: () => void;
 }
 
-const NFTCard = ({ title, creator, price, image }: NFTCardProps) => {
+const NFTCard = ({ title, price, image, lastSale = "< 0.0001 WETH", rank = "2.2M", onBuy, onClick }: NFTCardProps) => {
     return (
-        <div className="group relative rounded-2xl overflow-hidden bg-dark-green transition-all duration-400 cursor-pointer border border-white/10 hover:shadow-glow-gold hover:border-gold-start hover:-translate-y-2.5">
-            <div className="w-full h-[400px] overflow-hidden relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-1/2 after:bg-gradient-to-t after:from-black/90 after:to-transparent after:opacity-60 after:transition-opacity after:duration-300 group-hover:after:opacity-90">
-                <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-600 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110" loading="lazy" />
+        <div
+            className="group relative rounded-xl overflow-hidden bg-[#1a1a1a] border border-white/5 transition-all duration-300 hover:border-neon-green/50 hover:shadow-lg hover:-translate-y-1 cursor-pointer isolate"
+            onClick={onClick}
+        >
+            {/* Image Container */}
+            <div className="aspect-square relative overflow-hidden bg-gray-900">
+                <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                />
             </div>
 
-            <div className="absolute bottom-0 left-0 w-full p-6 z-20 translate-y-5 transition-transform duration-400 group-hover:translate-y-0">
-                <span className="text-sm text-neon-green uppercase tracking-wide mb-4 block">@{creator}</span>
-                <h3 className="text-2xl text-white mb-2 font-bold">{title}</h3>
+            {/* Content Section */}
+            <div className="p-4 flex flex-col gap-2">
+                {/* Title + Badge Row */}
+                <div className="flex justify-between items-start">
+                    <h3 className="text-white font-bold text-sm tracking-wide truncate pr-2">{title}</h3>
+                    <div className="flex items-center gap-1 bg-white/10 px-1.5 py-0.5 rounded text-[10px] text-gray-300 font-medium">
+                        <Layers size={10} />
+                        <span>{rank}</span>
+                    </div>
+                </div>
 
-                <div className="flex justify-between items-center opacity-0 translate-y-2.5 transition-all duration-400 delay-100 group-hover:opacity-100 group-hover:translate-y-0">
-                    <span className="font-bold text-gold-start">{price}</span>
-                    <button className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-xs uppercase transition-all duration-300 hover:bg-neon-green hover:text-black">Bid Now</button>
+                {/* Price Section */}
+                <div className="mt-1">
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-white font-bold text-lg">{price}</span>
+                        {/* <span className="text-xs text-gray-500">RON</span> */}
+                    </div>
+                    <div className="text-[10px] text-gray-500 flex items-center gap-1">
+                        Last sale: <span className="text-gray-400">{lastSale}</span>
+                    </div>
+                </div>
+
+                {/* Buy Button (Hidden by default, visible on hover) */}
+                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/90 via-black/60 to-transparent hidden lg:flex items-end justify-center">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onBuy && onBuy();
+                        }}
+                        className="w-full py-2 bg-neon-green text-black font-bold text-sm uppercase tracking-wider rounded shadow-lg hover:bg-white transition-colors"
+                    >
+                        Buy Now
+                    </button>
                 </div>
             </div>
         </div>

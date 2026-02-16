@@ -1,9 +1,11 @@
-
+import {
+    X, ChevronDown, ChevronUp,
+    Globe, MoreHorizontal, Heart, RefreshCcw, BadgeCheck,
+    Twitter, Disc
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { X, ExternalLink, Share2 } from 'lucide-react';
 import { getItemById } from '../../utils/mockItems';
 import type { IItemDetail } from '../../utils/mockItems';
-import BuyButton from '../Web3/BuyButton';
 import BuyConfirmDialog from '../Modals/BuyConfirmDialog';
 import PlaceOfferDialog from '../Modals/PlaceOfferDialog';
 
@@ -11,13 +13,21 @@ interface ItemModalProps {
     isOpen: boolean;
     itemId: string;
     onClose: () => void;
+    onBuy?: () => void;
 }
 
-const ItemModal = ({ isOpen, itemId, onClose }: ItemModalProps) => {
+const ItemModal = ({ isOpen, itemId, onClose, onBuy }: ItemModalProps) => {
     const [item, setItem] = useState<IItemDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [activeTab, setActiveTab] = useState<'overview' | 'traits' | 'activity'>('overview');
+
+    // Accordion States (Track open sections by ID)
+    const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+        traits: true,
+        priceHistory: false,
+        about: false,
+        details: false
+    });
 
     // Modal states
     const [showBuyDialog, setShowBuyDialog] = useState(false);
@@ -30,177 +40,276 @@ const ItemModal = ({ isOpen, itemId, onClose }: ItemModalProps) => {
                 const data = getItemById(itemId);
                 setItem(data || null);
                 setLoading(false);
-            }, 500);
+            }, 300);
         }
     }, [isOpen, itemId]);
+
+    const toggleSection = (section: string) => {
+        setOpenSections(prev => ({
+            ...prev,
+            [section]: !prev[section]
+        }));
+    };
+
+    const handleBuyClick = () => {
+        if (onBuy) {
+            onBuy();
+        } else {
+            setShowBuyDialog(true);
+        }
+    };
 
     if (!isOpen) return null;
 
     if (loading || !item) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-neon-green"></div>
             </div>
         );
     }
 
     return (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
-            <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] overflow-y-auto bg-black/90 backdrop-blur-xl">
+            <div className="min-h-screen flex items-center justify-center p-0 md:p-4">
+
                 {/* Modal Container */}
-                <div className="relative bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden shadow-2xl">
+                <div className="relative bg-[#0a0a0a] md:border md:border-white/10 md:rounded-2xl w-full max-w-7xl h-full md:h-auto min-h-[90vh] flex flex-col md:flex-row overflow-hidden shadow-2xl">
 
-                    {/* Close Button */}
-                    <button
-                        onClick={onClose}
-                        className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-all"
-                    >
-                        <X size={24} />
-                    </button>
+                    {/* Navbar / Close (Mobile Sticky or Absolute) */}
+                    <div className="absolute top-0 right-0 z-20 p-4 flex gap-2">
+                        {/* <button className="p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-all backdrop-blur-md">
+                            <Share2 size={20} />
+                        </button> */}
+                        <button
+                            onClick={onClose}
+                            className="p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-all backdrop-blur-md"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
 
-                    {/* Left: Image Gallery */}
-                    <div className="w-full md:w-1/2 bg-black/50 p-6 md:p-10 flex flex-col justify-center items-center relative">
-                        <div className="relative w-full aspect-square max-w-[500px] rounded-xl overflow-hidden bg-slate-900 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                    {/* LEFT COLUMN: Image */}
+                    <div className="w-full md:w-[55%] bg-[#111] flex flex-col items-center justify-center p-4 md:p-12 relative border-b md:border-b-0 md:border-r border-white/5">
+                        <div className="relative w-full aspect-square max-w-[600px] rounded-xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5">
                             <img
                                 src={item.images[currentImageIndex]}
                                 alt={item.name}
                                 className="w-full h-full object-cover"
                             />
+                            {/* Chain Icon Overlay */}
+                            <div className="absolute top-4 left-4">
+                                <span className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold text-white border border-white/10 flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    ETH
+                                </span>
+                            </div>
                         </div>
 
-                        {/* Image Nav */}
-                        <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide max-w-[500px]">
-                            {item.images.map((img, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setCurrentImageIndex(idx)}
-                                    className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${currentImageIndex === idx ? 'border-neon-green scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                                >
-                                    <img src={img} alt="" className="w-full h-full object-cover" />
-                                </button>
-                            ))}
-                        </div>
+                        {/* Thumbnails (if multiple) */}
+                        {item.images.length > 1 && (
+                            <div className="flex gap-2 mt-6 overflow-x-auto pb-2 scrollbar-hide max-w-full">
+                                {item.images.map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setCurrentImageIndex(idx)}
+                                        className={`w - 16 h - 16 rounded - lg overflow - hidden border - 2 transition - all shrink - 0 ${currentImageIndex === idx ? 'border-neon-green scale-105' : 'border-transparent opacity-60 hover:opacity-100'} `}
+                                    >
+                                        <img src={img} alt="" className="w-full h-full object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
-                    {/* Right: Details */}
-                    <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col h-[600px] md:h-auto overflow-y-auto scrollbar-thin scrollbar-thumb-neon-green/20">
-                        {/* Header */}
-                        <div className="mb-6">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <h4 className="text-neon-green font-bold text-sm uppercase tracking-wider mb-1">
-                                        {item.collection.name}
-                                    </h4>
-                                    <h1 className="text-3xl md:text-4xl font-black text-white mb-2">{item.name}</h1>
+                    {/* RIGHT COLUMN: Details */}
+                    <div className="w-full md:w-[45%] flex flex-col h-full max-h-[100vh] md:max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-neon-green/20 bg-[#0a0a0a]">
+
+                        <div className="p-6 md:p-8 space-y-8">
+
+                            {/* Header Section */}
+                            <div>
+                                {/* Top Row: Collection & Socials */}
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="flex items-center gap-1.5 text-neon-green font-bold text-sm md:text-base cursor-pointer hover:text-white transition-colors">
+                                        <span>{item.collection.name}</span>
+                                        <BadgeCheck size={18} fill="#00ffa3" className="text-black" />
+                                    </div>
+                                    <div className="flex gap-1 md:gap-2 text-gray-400">
+                                        <button className="p-2 hover:text-white transition-colors"><Globe size={18} /></button>
+                                        <button className="p-2 hover:text-white transition-colors"><Twitter size={18} /></button>
+                                        <button className="p-2 hover:text-white transition-colors"><MoreHorizontal size={18} /></button>
+                                    </div>
                                 </div>
-                                <div className="flex gap-2">
-                                    <button className="p-2 rounded-full border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
-                                        <Share2 size={18} />
+
+                                <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">{item.name}</h1>
+
+                                <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
+                                    <span>Owned by <span className="text-neon-green font-bold cursor-pointer hover:underline">Underground_trader</span></span>
+                                    <div className="flex items-center gap-1 text-xs md:text-sm">
+                                        <Heart size={14} /> <span>124 favorites</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 text-xs md:text-sm">
+                                        <RefreshCcw size={14} /> <span>143 views</span>
+                                    </div>
+                                </div>
+
+                                {/* Tags/Badges Grid */}
+                                <div className="flex flex-wrap gap-2 mb-8">
+                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-mono text-gray-300">ERC721</span>
+                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-mono text-gray-300">BASE</span>
+                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-mono text-gray-300">TOKEN ID #{item.id}</span>
+                                </div>
+                            </div>
+
+                            {/* Main Box: Price & Actions */}
+                            <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
+                                {/* Timer / Status Bar */}
+                                <div className="bg-white/5 px-6 py-3 border-b border-white/5 flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-neon-green animate-pulse"></div>
+                                    <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Sale ends in 14h 23m 12s</span>
+                                </div>
+
+                                <div className="p-6">
+                                    {/* Stats Grid */}
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                        <div>
+                                            <span className="text-xs text-gray-500 block mb-1">Current Price</span>
+                                            <span className="text-xl md:text-2xl font-bold text-white">{item.price} ETH</span>
+                                            <span className="text-xs text-gray-500 block">≈ $3,402.12</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-xs text-gray-500 block mb-1">Top Offer</span>
+                                            <span className="text-base font-bold text-gray-300">0.85 WETH</span>
+                                            <span className="text-xs text-gray-500 block">≈ $2,832.00</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-xs text-gray-500 block mb-1">Rarity</span>
+                                            <span className="text-base font-bold text-neon-green">Top 5%</span>
+                                            <span className="text-xs text-gray-500 block">Rank #342</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-xs text-gray-500 block mb-1">Last Sale</span>
+                                            <span className="text-base font-bold text-gray-300">0.95 ETH</span>
+                                            <span className="text-xs text-gray-500 block">3 days ago</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <div className="flex-1">
+                                            {/* We manually style the BuyButton wrapper or pass class to it if supported,
+                                                but here we are wrapping the implementation of BuyButton or replacing its look.
+                                                To match the reference "Big Blue Button" (now Green), we need full width.
+                                            */}
+                                            <button
+                                                onClick={handleBuyClick}
+                                                className="w-full py-4 bg-neon-green text-black font-black text-lg uppercase tracking-wider rounded-lg hover:bg-white hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(0,255,163,0.2)]"
+                                            >
+                                                Buy Now
+                                            </button>
+                                        </div>
+                                        <button
+                                            onClick={() => setShowOfferDialog(true)}
+                                            className="flex-1 py-4 bg-white/5 border border-white/10 text-white font-bold text-lg uppercase tracking-wider rounded-lg hover:bg-white/10 hover:border-white transition-all"
+                                        >
+                                            Make Offer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Accordions Section */}
+                            <div className="space-y-4">
+
+                                {/* Traits Accordion */}
+                                <div className="border border-white/10 rounded-xl overflow-hidden bg-[#111]">
+                                    <button
+                                        onClick={() => toggleSection('traits')}
+                                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-2 font-bold text-white">
+                                            {/* <Tag size={18} /> */}
+                                            <span>Traits</span>
+                                            <span className="px-2 py-0.5 bg-white/10 rounded text-xs text-gray-400">{item.traits.length}</span>
+                                        </div>
+                                        {openSections['traits'] ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
                                     </button>
-                                    <button className="p-2 rounded-full border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
-                                        <ExternalLink size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-400">
-                                <span>Owned by</span>
-                                <span className="text-blue-400 font-bold hover:underline cursor-pointer">0x12..34</span>
-                            </div>
-                        </div>
 
-                        {/* Price & Actions */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 md:p-6 mb-8">
-                            <div className="flex flex-col gap-2 mb-6">
-                                <span className="text-gray-400 text-sm">Current Price</span>
-                                <div className="flex items-end gap-3">
-                                    <span className="text-3xl md:text-4xl font-bold text-white">{item.price} ETH</span>
-                                    <span className="text-gray-500 mb-1">$1,850.42</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <div className="flex-1">
-                                    <BuyButton
-                                        item={item}
-                                        onBuy={() => setShowBuyDialog(true)}
-                                    />
-                                </div>
-                                <button
-                                    onClick={() => setShowOfferDialog(true)}
-                                    className="flex-1 py-3 border border-white/20 text-white font-bold rounded-lg hover:bg-white/10 transition-all"
-                                >
-                                    Make Offer
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Tabs */}
-                        <div className="flex gap-6 border-b border-white/10 mb-6">
-                            {(['overview', 'traits', 'activity'] as const).map(tab => (
-                                <button
-                                    key={tab}
-                                    onClick={() => setActiveTab(tab)}
-                                    className={`pb-3 text-sm font-bold uppercase tracking-wider transition-all relative ${activeTab === tab ? 'text-neon-green' : 'text-gray-400 hover:text-white'}`}
-                                >
-                                    {tab}
-                                    {activeTab === tab && (
-                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-green"></span>
+                                    {openSections['traits'] && (
+                                        <div className="p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 border-t border-white/5">
+                                            {item.traits.map((trait: any, i: number) => (
+                                                <div key={i} className="bg-white/5 border border-white/5 rounded-lg p-3 hover:border-neon-green/30 transition-colors cursor-default">
+                                                    <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1 tracking-wider">{trait.name}</span>
+                                                    <span className="text-white font-bold text-sm block mb-1">{trait.value}</span>
+                                                    <div className="flex justify-between items-center text-[10px] text-neon-green">
+                                                        <span>21% have this</span>
+                                                        <span>Floor: 0.45</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     )}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Tab Content */}
-                        <div className="flex-1">
-                            {activeTab === 'overview' && (
-                                <div className="space-y-6">
-                                    <div>
-                                        <h3 className="font-bold text-white mb-2">Description</h3>
-                                        <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="p-3 bg-white/5 rounded-lg border border-white/5">
-                                            <span className="text-xs text-gray-500 uppercase block mb-1">Creator Royalty</span>
-                                            <span className="font-bold text-white">{item.royalty}%</span>
-                                        </div>
-                                        <div className="p-3 bg-white/5 rounded-lg border border-white/5">
-                                            <span className="text-xs text-gray-500 uppercase block mb-1">Token Standard</span>
-                                            <span className="font-bold text-white">ERC-721</span>
-                                        </div>
-                                    </div>
                                 </div>
-                            )}
 
-                            {activeTab === 'traits' && (
-                                <div className="grid grid-cols-2 gap-3">
-                                    {item.traits.map((trait: any, i: number) => (
-                                        <div key={i} className="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-white/10 transition-colors">
-                                            <span className="text-xs text-neon-green uppercase font-bold block mb-1">{trait.name}</span>
-                                            <span className="text-white font-bold block mb-1">{trait.value}</span>
-                                            <span className="text-xs text-gray-500">21% have this</span>
+                                {/* About Accordion */}
+                                <div className="border border-white/10 rounded-xl overflow-hidden bg-[#111]">
+                                    <button
+                                        onClick={() => toggleSection('about')}
+                                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-2 font-bold text-white">
+                                            <span>About {item.collection.name}</span>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                        {openSections['about'] ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+                                    </button>
 
-                            {activeTab === 'activity' && (
-                                <div className="space-y-4">
-                                    {item.transactionHistory.map((tx: any, i: number) => (
-                                        <div key={i} className="flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5">
-                                            <div className="flex flex-col">
-                                                <span className="text-white font-bold capitalize">{tx.type}</span>
-                                                <span className="text-xs text-gray-500">{tx.date}</span>
-                                            </div>
-                                            <div className="text-right">
-                                                <span className="text-white font-bold block">{tx.price} ETH</span>
-                                                <span className="text-xs text-blue-400 font-mono">From: 0x...{tx.from.slice(-4)}</span>
+                                    {openSections['about'] && (
+                                        <div className="p-6 border-t border-white/5 text-sm text-gray-400 leading-relaxed">
+                                            <p>{item.description}</p>
+                                            <div className="flex gap-4 mt-4">
+                                                <button className="p-2 border border-white/10 rounded-lg hover:border-white transition-colors"><Twitter size={16} /></button>
+                                                <button className="p-2 border border-white/10 rounded-lg hover:border-white transition-colors"><Globe size={16} /></button>
+                                                <button className="p-2 border border-white/10 rounded-lg hover:border-white transition-colors"><Disc size={16} /></button>
                                             </div>
                                         </div>
-                                    ))}
-                                    {item.transactionHistory.length === 0 && <p className="text-gray-500 italic text-sm">No activity yet</p>}
+                                    )}
                                 </div>
-                            )}
+
+                                {/* Stats/Details Accordion */}
+                                <div className="border border-white/10 rounded-xl overflow-hidden bg-[#111]">
+                                    <button
+                                        onClick={() => toggleSection('details')}
+                                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-2 font-bold text-white">
+                                            <span>Details</span>
+                                        </div>
+                                        {openSections['details'] ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+                                    </button>
+
+                                    {openSections['details'] && (
+                                        <div className="p-0 border-t border-white/5 text-sm">
+                                            {[
+                                                { label: 'Contract Address', value: '0x123...abc', highlight: true },
+                                                { label: 'Token ID', value: item.id },
+                                                { label: 'Token Standard', value: 'ERC-721' },
+                                                { label: 'Chain', value: 'Ethereum' },
+                                                { label: 'Creator Earnings', value: `${item.royalty}% ` },
+                                            ].map((row, i) => (
+                                                <div key={i} className="flex justify-between px-6 py-3 hover:bg-white/5 transition-colors">
+                                                    <span className="text-gray-400">{row.label}</span>
+                                                    <span className={`${row.highlight ? 'text-neon-green truncate w-32 text-right' : 'text-white'} `}>{row.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                            </div>
+
+                            {/* Extra space at bottom */}
+                            <div className="h-10"></div>
                         </div>
                     </div>
                 </div>
@@ -212,7 +321,6 @@ const ItemModal = ({ isOpen, itemId, onClose }: ItemModalProps) => {
                 item={item}
                 onClose={() => setShowBuyDialog(false)}
                 onSuccess={() => {
-                    // Refresh item or show global success
                     console.log('Bought!');
                 }}
             />

@@ -2,13 +2,12 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
-import { useLoading } from '../context/LoadingContext';
+
 import HeroSlider from './HeroSlider';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
-    const { isLoading } = useLoading();
     const containerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -18,8 +17,6 @@ const HeroSection = () => {
 
     // Animation Effect
     useEffect(() => {
-        if (isLoading) return; // Wait for loading to finish
-
         const tl = gsap.timeline();
 
         // Initial Set
@@ -90,7 +87,7 @@ const HeroSection = () => {
                 },
             });
         }
-    }, [isLoading]);
+    }, []);
 
     // Particle System
     useEffect(() => {

@@ -4,14 +4,14 @@ import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { MOCK_TRAITS } from '../../utils/mockTraits';
 
 interface FilterPanelProps {
-    // collection: ICollection; // Not used in mock yet
     onFiltersChange: (filters: any) => void;
 }
 
 const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
+    // TODO: Initialize from URL params if available
     const [filters, setFilters] = useState({
         status: {
-            buyNow: true,
+            buyNow: false,
             onAuction: false,
             onOffer: false,
             notForSale: false
@@ -80,7 +80,7 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
     };
 
     return (
-        <div className="sticky top-44 bg-slate-900 border border-slate-800 rounded-lg p-4 md:p-6 text-white h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700">
+        <div className="sticky top-44 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg p-4 md:p-6 text-white h-[calc(100vh-140px)] scrollbar-hide overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-lg">🎛️ FILTERS</h3>
                 <button onClick={clearAll} className="text-xs text-neon-green hover:underline">Clear All</button>
@@ -150,7 +150,7 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
                             </button>
 
                             {expandedTraits[group] && (
-                                <div className="p-3 bg-slate-900/50 space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700">
+                                <div className="p-3 bg-slate-900/50 space-y-2 max-h-40 overflow-y-auto scrollbar-hide">
                                     {traits.map(trait => {
                                         const isSelected = filters.traits[group]?.includes(trait.name);
                                         return (
