@@ -1,12 +1,18 @@
-import { Routes,Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import UserLayout from "../layout/UserLayout";
+import { Explore, UserHome,BuySell,Profile } from "../pages/user";
 
 const UserRoutes = () => {
-    return (
-        <Routes>
-            <Route path="/profile" element={<h1>Profile</h1>} />
-            <Route path="/settings" element={<h1>Settings</h1>} />
-        </Routes>
-    );
-}
+  return (
+    <Routes>
+      <Route path="/" element={<UserLayout />}>
+        <Route index element={<UserHome />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/buy-sell" element={<BuySell />} />
+      </Route>
+    </Routes>
+  );
+};
 
 export default UserRoutes;

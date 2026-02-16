@@ -1,29 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-import one from "../assets/categories/1.png"
-import two from "../assets/categories/2.png"
-import three from "../assets/categories/3.png"
-import four from "../assets/categories/4.png"
-import five from "../assets/categories/5.png"
-const images = [
-    one,
-    two,
-    three,
-    four,
-    five
-];
+
+import { useNavigate } from 'react-router-dom';
+import { HeroContent } from '../constant';
+
 
 const HeroSlider = () => {
+    const navigate = useNavigate()
     const [activeIndex, setActiveIndex] = useState(1);
     const [isHovered, setIsHovered] = useState(false);
     const sliderRef = useRef<HTMLDivElement>(null);
 
     const nextSlide = () => {
-        setActiveIndex((prev) => (prev + 1) % images.length);
+        setActiveIndex((prev) => (prev + 1) % HeroContent.length);
     };
 
     const prevSlide = () => {
-        setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+        setActiveIndex((prev) => (prev - 1 + HeroContent.length) % HeroContent.length);
     };
 
     // Auto-slide effect
@@ -32,6 +25,7 @@ const HeroSlider = () => {
         const interval = setInterval(nextSlide, 3000);
         return () => clearInterval(interval);
     }, [isHovered]);
+
 
     return (
         <div
@@ -51,18 +45,20 @@ const HeroSlider = () => {
 
             {/* Slider Container */}
             <div className="relative w-[300px] md:w-[400px] h-[500px] preserve-3d" ref={sliderRef}>
-                {images.map((img, index) => {
+                {HeroContent.map((img, index) => {
                     // Calculate position relative to active index
                     let diff = index - activeIndex;
                     // Handle wrap-around for endless feeling (simplified for 5 items)
-                    if (diff > 2) diff -= images.length;
-                    if (diff < -2) diff += images.length;
+                    if (diff > 2) diff -= HeroContent.length;
+                    if (diff < -2) diff += HeroContent.length;
 
                     const isActive = diff === 0;
 
                     return (
                         <div
                             key={index}
+                            onClick={()=>navigate(img.redirect)}
+
                             className="absolute top-0 left-0 w-full h-full transition-all duration-1000 cubic-bezier(0.165, 0.84, 0.44, 1)"
                             style={{
                                 transform: `
@@ -77,11 +73,11 @@ const HeroSlider = () => {
                             }}
                         >
                             <div className={`w-full h-full rounded-2xl overflow-hidden border-2 transition-all duration-300 ${isActive ? 'border-neon-green/50 shadow-[0_0_20px_rgba(0,255,163,0.2)] hover:shadow-[0_0_50px_rgba(0,255,163,0.6)] hover:border-neon-green' : 'border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]'} bg-black`}>
-                                <img src={img} alt="NFT" className="w-full h-full object-cover" />
+                                <img src={img.image} alt="NFT" className="w-full h-full object-cover" />
                                 {isActive && (
                                     <div className="absolute bottom-6 left-6 right-6 p-4 bg-black/60 backdrop-blur-md rounded-xl border border-white/10">
-                                        <h3 className="text-white font-bold uppercase tracking-wider text-sm">Divine Artifact #{index + 1}</h3>
-                                        <p className="text-neon-green text-xs font-mono mt-1">Current Bid: 2.{index * 3 + 1}7 ETH</p>
+                                        <h3 className="text-white font-bold uppercase tracking-wider text-sm">{img.title}</h3>
+                                        <p className="text-neon-green text-xs font-mono mt-1">Current Bid: {img.current_bid}    </p>
                                     </div>
                                 )}
                             </div>
