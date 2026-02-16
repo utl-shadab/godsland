@@ -1,9 +1,7 @@
-import "./index.css";
-
 import IndexRoutes from "./routes/IndexRoutes";
 
-function App() {
+const App = () => {
   return <IndexRoutes />;
-}
+};
 
 export default App;

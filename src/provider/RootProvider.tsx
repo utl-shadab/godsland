@@ -10,7 +10,6 @@ const RootProvider = () => {
       <Router>
         <Preloader />
         <App />
- 
       </Router>
     </LoadingProvider>
   );
