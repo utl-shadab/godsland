@@ -13,8 +13,12 @@ const HomeRoutes = () => {
       <Route path="/" element={<HomeLayout />}>
         <Route index element={<Home />} />
         <Route path="/market" element={<CategoryPage />} />
+        <Route path="/collections" element={<CategoryPage />} /> 
+        {/* repolace with new colllections display page instead of same category */}
+        <Route path="/collection/:category" element={<CategoryPage />} />
+        <Route path="/collection/:category/:slug" element={<CollectionPage />} />
+   
         <Route path="/market/:category" element={<CategoryPage />} />
-        <Route path="/collection/:slug" element={<CollectionPage />} />
         <Route path="/create" element={<CreateNFT />} />
         <Route path="/explore" element={<CategoryPage />} />
         <Route path="/auction" element={<ComingSoon />} />
