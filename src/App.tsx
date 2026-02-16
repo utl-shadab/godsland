@@ -19,7 +19,7 @@ function App() {
         <Route path="/market/:category" element={<CategoryPage />} />
         <Route path="/collection/:slug" element={<CollectionPage />} />
         <Route path="/create" element={<CreateNFT />} />
-        <Route path="/explore" element={<CategoryPage />} /> {/* Redirect or alias */}
+        <Route path="/explore" element={<CategoryPage />} />
         <Route path="/auction" element={<ComingSoon />} />
         <Route path="/club" element={<ComingSoon />} />
         <Route path="/collections" element={<ComingSoon />} />

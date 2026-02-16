@@ -6,7 +6,7 @@ import TrendingCard from './TrendingCard';
 gsap.registerPlugin(ScrollTrigger);
 
 const trendingItems = [
-    { title: 'Crown of Eternity', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=600', price: '5000 USDT' },
+    { title: 'Crown of Eternity', image: '/image-1.jpeg', price: '5000 USDT' },
     { title: 'Cyber Punk #2077', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600', price: '2800 USDT' },
     { title: 'Mecha God', image: 'https://images.unsplash.com/photo-1635492491273-455af7728453?auto=format&fit=crop&q=80&w=600', price: '4200 USDT' },
     { title: 'Neo Tokyo Drifter', image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=600', price: '1900 USDT' },
