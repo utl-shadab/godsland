@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { CATEGORIES, COLLECTIONS, MOCK_NFTS } from "../data/marketplaceData";
 import TrendingCollectionCard from "../components/TrendingCollectionCard";
 import NFTCard from "../components/NFTCard";
@@ -7,17 +7,18 @@ import ItemModal from "../components/Items/ItemModal";
 import CheckoutModal from "../components/Checkout/CheckoutModal";
 
 const CategoryPage = () => {
-  const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState(category || "all");
+  const [searchParams] = useSearchParams();
+  const categoryFromQuery = searchParams.get("category") || "all";
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromQuery);
 
   // Modal States
   const [selectedItem, setSelectedItem] = useState<any>(null); // For Item Details
   const [checkoutItem, setCheckoutItem] = useState<any>(null); // For Checkout
 
   useEffect(() => {
-    setSelectedCategory(category || "all");
-  }, [category]);
+    setSelectedCategory(categoryFromQuery);
+  }, [categoryFromQuery]);
 
   // Filtering Logic (Collections)
   const filteredCollections = COLLECTIONS.filter((col) => {
@@ -31,9 +32,9 @@ const CategoryPage = () => {
 
   const handleCategoryChange = (newCategory: string) => {
     if (newCategory === "all") {
-      navigate("/market");
+      navigate("/collections");
     } else {
-      navigate(`/market/${newCategory}`);
+      navigate(`/collections?category=${newCategory}`);
     }
   };
 
