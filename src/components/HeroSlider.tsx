@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-
 import { useNavigate } from 'react-router-dom';
 import { HeroContent } from '../constant';
 
@@ -57,9 +56,7 @@ const HeroSlider = () => {
                     return (
                         <div
                             key={index}
-                            onClick={()=>navigate(img.redirect)}
-
-                            className="absolute top-0 left-0 w-full h-full transition-all duration-1000 cubic-bezier(0.165, 0.84, 0.44, 1)"
+                            className="absolute top-0 left-0 w-full h-full transition-all duration-1000 cubic-bezier(0.165, 0.84, 0.44, 1) group"
                             style={{
                                 transform: `
                                     translateX(${diff * 70}%)
@@ -72,12 +69,25 @@ const HeroSlider = () => {
                                 filter: isActive ? 'none' : 'brightness(0.5)',
                             }}
                         >
-                            <div className={`w-full h-full rounded-2xl overflow-hidden border-2 transition-all duration-300 ${isActive ? 'border-neon-green/50 shadow-[0_0_20px_rgba(0,255,163,0.2)] hover:shadow-[0_0_50px_rgba(0,255,163,0.6)] hover:border-neon-green' : 'border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]'} bg-black`}>
+                            <div className={`w-full h-full rounded-2xl overflow-hidden border-2 transition-all duration-300 ${isActive ? 'border-neon-green/50 shadow-[0_0_20px_rgba(0,255,163,0.2)] group-hover:shadow-[0_0_50px_rgba(0,255,163,0.6)] group-hover:border-neon-green' : 'border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]'} bg-black relative`}>
                                 <img src={img.image} alt="NFT" className="w-full h-full object-cover" />
+                                
+                                {/* Explore Button - Shows on hover */}
+                                {isActive && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
+                                        <button 
+                                            onClick={() => navigate(img.redirect)}
+                                            className="px-8 py-3 cursor-pointer bg-neon-green text-black font-bold uppercase tracking-wider text-sm rounded-lg shadow-[0_0_20px_rgba(0,255,163,0.4)] hover:shadow-[0_0_40px_rgba(0,255,163,0.8)] hover:scale-110 transition-all duration-300 border-2 border-neon-green hover:bg-transparent hover:text-neon-green"
+                                        >
+                                            Explore
+                                        </button>
+                                    </div>
+                                )}
+                                
                                 {isActive && (
                                     <div className="absolute bottom-6 left-6 right-6 p-4 bg-black/60 backdrop-blur-md rounded-xl border border-white/10">
                                         <h3 className="text-white font-bold uppercase tracking-wider text-sm">{img.title}</h3>
-                                        <p className="text-neon-green text-xs font-mono mt-1">Current Bid: {img.current_bid}    </p>
+                                        <p className="text-neon-green text-xs font-mono mt-1">Current Bid: {img.current_bid}</p>
                                     </div>
                                 )}
                             </div>
@@ -90,7 +100,7 @@ const HeroSlider = () => {
                                         WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100%)',
                                     }}
                                 >
-                                    <img src={img} alt="Reflection" className="w-full h-full object-cover border-none blur-sm" />
+                                    <img src={img.image} alt="Reflection" className="w-full h-full object-cover border-none blur-sm" />
                                 </div>
                             )}
                         </div>
