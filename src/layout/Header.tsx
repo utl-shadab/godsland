@@ -111,7 +111,7 @@ const Header = () => {
                     <Link to="/club" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         NFT Club
                     </Link>
-                    <Link to="/market" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
+                    <Link to="/collections" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Collections
                     </Link>
                     <div

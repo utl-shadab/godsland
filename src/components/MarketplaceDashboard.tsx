@@ -127,7 +127,7 @@ const MarketplaceDashboard = ({ onCategorySelect }: any) => {
 
             {/* Top Pack Pulls */}
             <section className="dashboard-section mb-16">
-                <SectionHeader title="Top Pack Pulls" icon={Box} onSeeAll={() => navigate('/market/all')} />
+                <SectionHeader title="Top Pack Pulls" icon={Box} onSeeAll={() => navigate('/collections')} />
                 <div className="flex gap-6 overflow-x-auto custom-scrollbar pb-6 px-4 md:px-0">
                     {TOP_PACKS.map(item => (
                         <DashboardCard
@@ -142,7 +142,7 @@ const MarketplaceDashboard = ({ onCategorySelect }: any) => {
 
             {/* Biggest Movers */}
             <section className="dashboard-section mb-16">
-                <SectionHeader title="Biggest Movers in NFTs" icon={TrendingUp} onSeeAll={() => navigate('/market/all')} />
+                <SectionHeader title="Biggest Movers in NFTs" icon={TrendingUp} onSeeAll={() => navigate('/collections/all')} />
                 <div className="flex gap-6 overflow-x-auto custom-scrollbar pb-6 px-4 md:px-0">
                     {BIGGEST_MOVERS.map(item => (
                         <DashboardCard
@@ -157,7 +157,7 @@ const MarketplaceDashboard = ({ onCategorySelect }: any) => {
 
             {/* New Collections */}
             <section className="dashboard-section mb-16">
-                <SectionHeader title="New NFT Collections" icon={Activity} onSeeAll={() => navigate('/market/all')} />
+                <SectionHeader title="New NFT Collections" icon={Activity} onSeeAll={() => navigate('collections')} />
                 <div className="flex gap-6 overflow-x-auto custom-scrollbar pb-6 px-4 md:px-0">
                     {NEW_COLLECTIONS.map(item => (
                         <DashboardCard
@@ -172,7 +172,7 @@ const MarketplaceDashboard = ({ onCategorySelect }: any) => {
 
             {/* Drops Calendar */}
             <section className="dashboard-section mb-16">
-                <SectionHeader title="NFT Drops Calendar" icon={Calendar} onSeeAll={() => navigate('/market/all')} />
+                <SectionHeader title="NFT Drops Calendar" icon={Calendar} onSeeAll={() => navigate('/collections')} />
                 <div className="flex gap-6 overflow-x-auto custom-scrollbar pb-6 px-4 md:px-0">
                     {DROPS_CALENDAR.map(item => (
                         <DashboardCard
