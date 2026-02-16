@@ -14,7 +14,7 @@ const UserProtectedRoute = ({ children }: UserProtectedRouteProps) => {
 
 
   if (userLoggedIn) {
-    return <Navigate to="/pray" replace />;
+    return <Navigate to="/user" replace />;
   }
 
   return children;

@@ -10,7 +10,7 @@ const UserPrivateRoute = ({ Component }: UserPrivateRouteProps) => {
   //   const { userLoggedIn } = useSelector((state) => state.auth);
   const userLoggedIn = true;
   // console.log(userLoggedIn, "userLoggedIn");
-  return userLoggedIn ? <Component /> : <Navigate to="/welcome" />;
+  return userLoggedIn ? <Component /> : <Navigate to="/" />;
 };
 
 export default UserPrivateRoute;
