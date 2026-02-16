@@ -18,7 +18,7 @@ const HomeRoutes = () => {
         {/* <Route path="/collection/:category" element={<CategoryPage />} /> */}
         <Route path="/collection/:category/:slug" element={<CollectionPage />} />
    
-        {/* <Route path="/market/:category" element={<CategoryPage />} /> */}
+        <Route path="/market/:category" element={<CategoryPage />} />
         <Route path="/create" element={<CreateNFT />} />
         <Route path="/explore" element={<CategoryPage />} />
         <Route path="/auction" element={<ComingSoon />} />

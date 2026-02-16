@@ -43,9 +43,9 @@ const Explore = () => {
     const handleCategoryChange = (newCategory: string) => {
         setSelectedCategory(newCategory);
         if (newCategory === 'all') {
-            navigate('/market');
+            navigate('/collections');
         } else {
-            navigate(`/market/${newCategory}`);
+            navigate(`/collections?category=${newCategory}`);
         }
     };
 
@@ -100,7 +100,8 @@ const Explore = () => {
     const handleDashboardItemClick = (item: any) => {
         // If it's a collection-like item, open modal via route
         // We use 'all' as category for generic dashboard items
-        navigate(`/market/all/${item.id}`);
+        // navigate(`/market/all/${item.id}`);
+        navigate('/collections')
     };
 
     return (
