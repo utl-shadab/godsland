@@ -10,6 +10,7 @@ import CreativeCTA from '../components/CreativeCTA';
 import FAQSection from '../components/FAQSection';
 import AboutSection from '../components/AboutSection';
 import EcosystemSection from '../components/EcosystemSection';
+import FutureDropSection from '../components/FutureDropSection';
 
 const Home = () => {
     return (
@@ -18,6 +19,7 @@ const Home = () => {
             <CategoriesSection />
             <TrendingSection />
             <LiveAuctionSection />
+            <FutureDropSection />
             <MintingTechniques />
             {/* <FeaturedCollections /> */}
             <AboutSection />

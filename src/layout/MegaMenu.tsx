@@ -58,7 +58,7 @@ const MegaMenu = ({ isOpen, onClose }: MegaMenuProps) => {
 
     return (
         <div
-            className="fixed top-20 left-0 w-full bg-black/95 backdrop-blur-3xl z-40 overflow-hidden border-b border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+            className="mega-menu-container fixed top-20 left-0 w-full bg-black/95 backdrop-blur-3xl z-40 overflow-hidden border-b border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
             ref={menuRef}
             style={{ height: 0, opacity: 0 }}
         >

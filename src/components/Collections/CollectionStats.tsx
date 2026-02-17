@@ -71,6 +71,15 @@ const CollectionStats = ({ collection }: CollectionStatsProps) => {
                     value={formatNum(collection.itemCount)}
                 />
                 <StatItem
+                    label="Listed"
+                    value={collection.listedCount ? formatNum(collection.listedCount) : '-'}
+                    subtext={`${collection.listedCount ? ((collection.listedCount / collection.itemCount) * 100).toFixed(1) : 0}%`}
+                />
+                <StatItem
+                    label="On Auction"
+                    value={collection.auctionCount ? formatNum(collection.auctionCount) : '-'}
+                />
+                <StatItem
                     label="Royalty"
                     value={`${collection.royalty}%`}
                     subtext="(Creator)"

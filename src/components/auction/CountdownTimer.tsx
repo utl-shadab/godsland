@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CountdownTimer = ({ targetDate }: { targetDate: Date }) => {
+const CountdownTimer = ({ targetDate, onEnd }: { targetDate: Date; onEnd?: () => void }) => {
     const [timeLeft, setTimeLeft] = useState<{
         hours: number;
         minutes: number;
@@ -24,11 +24,16 @@ const CountdownTimer = ({ targetDate }: { targetDate: Date }) => {
         };
 
         const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
+            const calculated = calculateTimeLeft();
+            setTimeLeft(calculated);
+            if (calculated.isExpired) {
+                clearInterval(timer);
+                if (onEnd) onEnd();
+            }
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [targetDate]);
+    }, [targetDate, onEnd]);
 
     if (timeLeft.isExpired) {
         return <span className="text-red-500 font-bold uppercase text-[10px] tracking-wide">Ended</span>;

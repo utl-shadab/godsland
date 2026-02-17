@@ -11,6 +11,7 @@ export const CATEGORIES = [
 export const COLLECTIONS = CATEGORIES.flatMap(cat =>
     Array.from({ length: 8 }).map((_, i) => ({
         id: `col-${cat.id}-${i + 1}`,
+        slug: `${cat.name.toLowerCase().replace(/\s+/g, '-')}-${i + 1}`,
         name: `${cat.name} Collection ${i + 1}`,
         categoryId: cat.id,
         floorPrice: (Math.random() * 5 + 0.1).toFixed(2),

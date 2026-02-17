@@ -24,6 +24,13 @@ export interface ICollection {
     royalty: number;
     verified: boolean;
     chain: string;
+    socials?: {
+        twitter?: string;
+        discord?: string;
+        website?: string;
+    };
+    listedCount?: number;
+    auctionCount?: number;
 }
 
 export const MOCK_COLLECTIONS: ICollection[] = [
@@ -51,7 +58,14 @@ export const MOCK_COLLECTIONS: ICollection[] = [
         itemCount: 8888,
         royalty: 5,
         verified: true,
-        chain: "ethereum"
+        chain: "ethereum",
+        socials: {
+            twitter: "https://twitter.com/pudgypenguins",
+            discord: "https://discord.gg/pudgypenguins",
+            website: "https://pudgypenguins.com"
+        },
+        listedCount: 450,
+        auctionCount: 12
     },
     {
         id: "col_456",
@@ -77,7 +91,14 @@ export const MOCK_COLLECTIONS: ICollection[] = [
         itemCount: 10000,
         royalty: 2.5,
         verified: true,
-        chain: "ethereum"
+        chain: "ethereum",
+        socials: {
+            twitter: "https://twitter.com/BoredApeYC",
+            discord: "https://discord.gg/bayc",
+            website: "https://boredapeyachtclub.com"
+        },
+        listedCount: 850,
+        auctionCount: 45
     }
 ];
 

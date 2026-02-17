@@ -12,7 +12,7 @@ const Header = () => {
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const headerRef = useRef(null);
+    const headerRef = useRef<HTMLElement>(null);
     const lastScrollY = useRef(0);
 
 
@@ -32,7 +32,6 @@ const Header = () => {
         }
     }, []);
 
-    // Handle GSAP Animation based on visibility
     useEffect(() => {
         if (!headerRef.current) return;
 
@@ -85,13 +84,27 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isMegaMenuOpen) {
+                const target = event.target as HTMLElement;
+                if (headerRef.current && !headerRef.current.contains(target) && !target.closest('.mega-menu-container')) {
+                    setIsMegaMenuOpen(false);
+                }
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isMegaMenuOpen]);
+
     return (
         <>
             <header
                 ref={headerRef}
-                className={`fixed top-0 left-0 w-full h-20 z-50 px-8 flex justify-between items-center transition-colors duration-300 ${isScrolled
-                    ? 'bg-black/90 backdrop-blur-md border-b border-neon-green/30 shadow-[0_0_20px_rgba(0,255,163,0.15)]'
-                    : 'bg-transparent border-transparent'
+                className={`fixed bg-black top-0 left-0 w-full h-20 z-50 px-8 flex justify-between items-center transition-all duration-300 ${isScrolled
+                    ? 'bg-[#000000]/50 backdrop-blur-xl border-b border-white/5 shadow-lg'
+                    : 'bg-black border-transparent'
                     }`}
             >
                 <div className="text-2xl font-bold uppercase tracking-widest text-white flex items-center gap-2 group z-[102]">

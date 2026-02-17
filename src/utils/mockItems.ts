@@ -176,6 +176,16 @@ export const filterItems = (items: IItem[], filters: any) => {
     if (filters.status.buyNow) {
         filtered = filtered.filter(item => item.isListed);
     }
+    if (filters.status.onAuction) {
+        // Mock auction check
+        filtered = filtered.filter(item => item.isListed && parseInt(item.id.split('_')[1] || '0') % 5 === 0);
+    }
+    if (filters.status.new) {
+        filtered = filtered.filter(item => parseInt(item.id.split('_')[1] || '0') > 90);
+    }
+    if (filters.status.sold) {
+        filtered = filtered.filter(item => !item.isListed && item.lastSalePrice);
+    }
 
     // Price
     if (filters.priceRange.min > 0 || filters.priceRange.max < 1000) {
@@ -185,9 +195,15 @@ export const filterItems = (items: IItem[], filters: any) => {
         });
     }
 
-    // Rarity
-    if (filters.rarity && filters.rarity.length > 0) {
-        filtered = filtered.filter(item => filters.rarity.includes(item.rarity.level));
+    // Rarity Rank
+    if (filters.rarityRank) {
+        filtered = filtered.filter(item => item.rarity.rank >= filters.rarityRank.min && item.rarity.rank <= filters.rarityRank.max);
+    }
+
+    // Membership Only
+    if (filters.membershipOnly) {
+        // Mock: Items with "Legendary" rarity are membership tokens
+        filtered = filtered.filter(item => item.rarity.level === 'Legendary');
     }
 
     // Traits
@@ -195,6 +211,7 @@ export const filterItems = (items: IItem[], filters: any) => {
         filtered = filtered.filter(item => {
             return Object.entries(filters.traits).every(([traitName, values]: [string, any]) => {
                 if (!values || values.length === 0) return true;
+                // Handle complex trait structure or flat structure if needed
                 return item.traits.some(t => t.name === traitName && values.includes(t.value));
             });
         });

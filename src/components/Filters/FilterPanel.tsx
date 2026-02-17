@@ -13,14 +13,15 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
         status: {
             buyNow: false,
             onAuction: false,
-            onOffer: false,
-            notForSale: false
+            new: false,
+            sold: false
         },
         priceRange: {
             min: 0,
             max: 1000
         },
-        rarity: [] as string[],
+        membershipOnly: false,
+        rarityRank: { min: 0, max: 10000 },
         traits: {} as Record<string, string[]>,
         sortBy: 'newest'
     });
@@ -28,7 +29,8 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
     const [expandedTraits, setExpandedTraits] = useState<Record<string, boolean>>({
         'Background': true,
         'Eyes': false,
-        'Hat': false
+        'Hat': false,
+        'Rarity': false
     });
 
     const toggleTraitGroup = (group: string) => {
@@ -60,7 +62,7 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
 
     const updateFilters = (newFilters: any) => {
         setFilters(newFilters);
-        // onFiltersChange(newFilters); // Real-time
+        onFiltersChange(newFilters); // Real-time
     };
 
     const applyFilters = () => {
@@ -69,9 +71,10 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
 
     const clearAll = () => {
         const reset = {
-            status: { buyNow: false, onAuction: false, onOffer: false, notForSale: false },
+            status: { buyNow: false, onAuction: false, new: false, sold: false },
             priceRange: { min: 0, max: 1000 },
-            rarity: [],
+            membershipOnly: false,
+            rarityRank: { min: 0, max: 10000 },
             traits: {},
             sortBy: 'newest'
         };
@@ -80,14 +83,14 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
     };
 
     return (
-        <div className="sticky top-44 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg p-4 md:p-6 text-white h-[calc(100vh-140px)] scrollbar-hide overflow-y-auto">
+        <div className="sticky top-24 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg p-4 md:p-6 text-white h-[calc(100vh-140px)] scrollbar-hide overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-lg">🎛️ FILTERS</h3>
                 <button onClick={clearAll} className="text-xs text-neon-green hover:underline">Clear All</button>
             </div>
 
             {/* Status */}
-            <div className="mb-6 border-b border-slate-800 pb-6">
+            <div className="mb-6 border-b border-white/10 pb-6">
                 <h4 className="text-xs font-bold text-neon-green uppercase mb-3">★ STATUS</h4>
                 <div className="space-y-2">
                     {Object.entries(filters.status).map(([key, value]) => (
@@ -102,6 +105,19 @@ const FilterPanel = ({ onFiltersChange }: FilterPanelProps) => {
                         </label>
                     ))}
                 </div>
+            </div>
+
+            {/* Membership Only */}
+            <div className="mb-6 border-b border-white/10 pb-6">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${filters.membershipOnly ? 'bg-gold-start border-gold-start' : 'border-slate-600 group-hover:border-gold-start/50'}`}>
+                        {filters.membershipOnly && <span className="text-black text-[10px] font-bold">✓</span>}
+                    </div>
+                    <input type="checkbox" className="hidden" checked={filters.membershipOnly} onChange={() => updateFilters({ ...filters, membershipOnly: !filters.membershipOnly })} />
+                    <span className="text-sm text-gold-start font-bold capitalize group-hover:text-yellow-200 transition-colors">
+                        Membership Gated Only
+                    </span>
+                </label>
             </div>
 
             {/* Price Range */}

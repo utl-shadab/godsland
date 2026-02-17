@@ -65,6 +65,24 @@ const CollectionHero = ({ collection, onFollow }: CollectionHeroProps) => {
 
                         {/* Actions */}
                         <div className="flex items-center gap-3">
+                            {collection.socials?.website && (
+                                <a href={collection.socials.website} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all hover:scale-105">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                                </a>
+                            )}
+                            {collection.socials?.twitter && (
+                                <a href={collection.socials.twitter} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all hover:scale-105">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-12.7 12.5S.2 5.3 7.8 4.5c2.1-.2 1.9-2.2 1.9-2.2z" /></svg>
+                                </a>
+                            )}
+                            {collection.socials?.discord && (
+                                <a href={collection.socials.discord} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all hover:scale-105">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 0c0 0 0 0 0 0zM12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" /></svg>
+                                </a>
+                            )}
+
+                            <div className="w-px h-8 bg-white/20 mx-1" />
+
                             <button
                                 onClick={handleFollow}
                                 className={`px-6 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all duration-300 ${isFollowing

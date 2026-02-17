@@ -19,20 +19,12 @@ const CollectionDetails = () => {
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
     useEffect(() => {
-        // Simulate API call
         setTimeout(() => {
             if (collectionId) {
                 const data = COLLECTIONS.find(c => c.id === collectionId);
-                // Optional: Validate category matches data.categoryId
                 if (data) {
                     setCollection(data);
-                    // Filter items for this collection
                     const items = MOCK_NFTS.filter(nft => nft.collectionId === collectionId);
-                    // Map MOCK_NFTS to IItem shape if needed (ItemsGrid expects IItem)
-                    // Currently MOCK_NFTS has shape: { id, title, creator, price, image, category, type, stars }
-                    // IItem expects: { id, name, image, price, isListed, rarity, traits, owner, lastSalePrice, isFavorited }
-                    // We need a mapping here or update MOCK_NFTS to match IItem. 
-                    // Let's map it for now to ensure compatibility.
                     const mappedItems = items.map(nft => ({
                         id: nft.id,
                         name: nft.title,
@@ -48,7 +40,6 @@ const CollectionDetails = () => {
                     setCollectionItems(mappedItems);
                 } else {
                     console.error('Collection not found');
-                    // navigate('/market'); // Fallback
                 }
             }
         }, 500);

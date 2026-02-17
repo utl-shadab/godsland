@@ -109,7 +109,23 @@ const AuctionItemPage = () => {
                             <div className="flex justify-center mb-6">
                                 <div className="text-sm font-medium text-gray-400 flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg border border-white/5">
                                     <span>Ends in</span>
-                                    <CountdownTimer targetDate={targetDate} />
+                                    <CountdownTimer
+                                        targetDate={targetDate}
+                                        onEnd={() => {
+                                            // Mock Auction End Logic
+                                            console.log("Auction Ended");
+                                            // In a real app, this would check if there's a winner and create an order
+                                            // For demo, let's simulate a winning bid and redirect to order page
+
+                                            // Simulate delay then redirect
+                                            setTimeout(() => {
+                                                const mockOrderId = "ord_" + Math.random().toString(36).substr(2, 9);
+                                                // navigate(`/orders/${mockOrderId}`); 
+                                                // Uncomment above line to enable auto-redirect. Keeping it disabled for now to not disrupt viewing the page.
+                                                alert("Auction Ended! Order Created: " + mockOrderId);
+                                            }, 2000);
+                                        }}
+                                    />
                                 </div>
                             </div>
 

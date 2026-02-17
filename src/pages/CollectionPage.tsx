@@ -1,6 +1,8 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { COLLECTIONS, MOCK_NFTS } from '../data/marketplaceData';
+import { filterItems } from '../utils/mockItems';
 import CollectionHero from '../components/Collections/CollectionHero';
 import CollectionStats from '../components/Collections/CollectionStats';
 import FilterPanel from '../components/Filters/FilterPanel';
@@ -9,18 +11,36 @@ import ItemModal from '../components/Items/ItemModal';
 import ActivityTab from '../components/Collections/ActivityTab';
 import MobileFilterDrawer from '../components/MobileFilterDrawer';
 import CheckoutModal from '../components/Checkout/CheckoutModal';
+import LiveAuctionHighlight from '../components/Collections/LiveAuctionHighlight';
+import CollectionUtility from '../components/Collections/CollectionUtility';
 
 const CollectionPage = () => {
-    const { slug } = useParams<{ slug: string }>(); // Assuming route is /collection/:slug, but data uses IDs. We'll match by ID for now.
+    const { slug } = useParams<{ slug: string }>(); // Assuming route is /collection/:category/:slug
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [collection, setCollection] = useState<any>(null);
     const [collectionItems, setCollectionItems] = useState<any[]>([]);
-    const [activeTab, setActiveTab] = useState('items'); // 'items' | 'activity'
+    const [activeTab, setActiveTab] = useState('items'); // 'items' | 'activity' | 'analytics'
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [checkoutItem, setCheckoutItem] = useState<any>(null);
+
+    // Initialize state from URL params
+    const [filters, setFilters] = useState(() => {
+        const min = searchParams.get('minPrice');
+        const max = searchParams.get('maxPrice');
+        return {
+            status: { buyNow: false, onAuction: false, new: false, sold: false },
+            priceRange: {
+                min: min ? parseFloat(min) : 0,
+                max: max ? parseFloat(max) : 1000
+            },
+            membershipOnly: false,
+            rarityRank: { min: 0, max: 10000 },
+            traits: {}
+        };
+    });
 
     const handleBuyItem = (itemId: string) => {
         const item = collectionItems.find(i => i.id === itemId);
@@ -29,14 +49,14 @@ const CollectionPage = () => {
         }
     };
 
-    // Initial Data Load
     useEffect(() => {
-        // Simulate API call or data lookup
-        const foundCollection = COLLECTIONS.find(c => c.id === slug); // slug is technically ID in mock data
+
+        const foundCollection = COLLECTIONS.find(c => c.id === slug || c.slug === slug);
+
         if (foundCollection) {
             setCollection(foundCollection);
             // Load initial items
-            const items = MOCK_NFTS.filter(nft => nft.collectionId === slug);
+            const items = MOCK_NFTS.filter(nft => nft.collectionId === foundCollection.id);
             // Mapper (reused logic)
             const mappedItems = items.map(nft => ({
                 id: nft.id,
@@ -44,12 +64,12 @@ const CollectionPage = () => {
                 image: nft.image,
                 price: parseFloat(nft.price.replace(' ETH', '')),
                 isListed: true,
-                rarity: { score: 0, rank: 0, level: 'Common' },
+                rarity: { score: nft.stars * 20, rank: Math.floor(Math.random() * 1000), level: nft.type || 'Common' },
                 traits: [],
                 owner: '0x...',
                 lastSalePrice: null,
                 isFavorited: false,
-                category: nft.category // Adding category for filtering
+                category: nft.category
             }));
             setCollectionItems(mappedItems);
         } else {
@@ -57,29 +77,6 @@ const CollectionPage = () => {
             // navigate('/market');
         }
     }, [slug, navigate]);
-
-
-    // Filter State Management via URL
-    // We will pass `onFiltersChange` to FilterPanel which will update URL.
-    // FilterPanel needs to read from URL to set its initial state.
-    // For now, let's keep it simple: FilterPanel manages its own state and notifies parent.
-    // Parent filters items.
-
-    // In a real app, FilterPanel would initialize from URL params.
-
-    // Initialize state from URL params
-    const [filters, setFilters] = useState(() => {
-        const min = searchParams.get('minPrice');
-        const max = searchParams.get('maxPrice');
-        return {
-            status: { buyNow: false, onAuction: false },
-            priceRange: {
-                min: min ? parseFloat(min) : 0,
-                max: max ? parseFloat(max) : 100
-            },
-            traits: {}
-        };
-    });
 
     const handleFiltersChange = (newFilters: any) => {
         setFilters(newFilters);
@@ -89,7 +86,7 @@ const CollectionPage = () => {
         if (newFilters.priceRange.min > 0) params.set('minPrice', newFilters.priceRange.min.toString());
         else params.delete('minPrice');
 
-        if (newFilters.priceRange.max < 100) params.set('maxPrice', newFilters.priceRange.max.toString()); // Assuming 100 is default max
+        if (newFilters.priceRange.max < 1000) params.set('maxPrice', newFilters.priceRange.max.toString());
         else params.delete('maxPrice');
 
         setSearchParams(params);
@@ -97,16 +94,14 @@ const CollectionPage = () => {
 
     // Filter Logic
     const filteredItems = useMemo(() => {
-        return collectionItems.filter(item => {
-            // Price Filter
-            if (item.price < filters.priceRange.min || item.price > filters.priceRange.max) return false;
-
-            // Status Filter (Mock)
-            // if (filters.status.buyNow && !item.isListed) return false;
-
-            return true;
-        });
+        return filterItems(collectionItems, filters);
     }, [collectionItems, filters]);
+
+    // Active Auctions Count for Highlight Section
+    const activeAuctionsCount = useMemo(() => {
+        return collectionItems.filter(item => item.isListed && parseInt(item.id.split('_')[1] || '0') % 5 === 0).length;
+    }, [collectionItems]);
+
 
     if (!collection) return <div className="min-h-screen bg-black text-white pt-24 text-center">Loading Collection...</div>;
 
@@ -120,6 +115,15 @@ const CollectionPage = () => {
 
             {/* Content Area */}
             <div className={`max-w-[1920px] mx-auto px-4 md:px-6 py-8`}>
+
+                {/* Collection Utility Section */}
+                <CollectionUtility category={collection.slug === 'pudgy-penguins' ? 'Art' : (collection.slug === 'bored-ape-yacht-club' ? 'Luxury' : 'Entertainment')} />
+
+                {/* Live Auction Highlight */}
+                {activeAuctionsCount > 0 && activeTab === 'items' && (
+                    <LiveAuctionHighlight items={collectionItems} />
+                )}
+
                 {/* Tabs */}
                 <div className="flex items-center justify-between border-b border-white/10 mb-6">
                     <div className="flex gap-8 overflow-x-auto">
@@ -171,7 +175,7 @@ const CollectionPage = () => {
                 )}
 
                 {activeTab === 'activity' && (
-                    <div className="max-w-5xl mx-auto">
+                    <div className=" mx-auto">
                         <ActivityTab collectionId={collection.id} />
                     </div>
                 )}
