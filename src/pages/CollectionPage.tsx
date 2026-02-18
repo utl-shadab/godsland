@@ -90,7 +90,7 @@ const CollectionPage = () => {
         else params.delete('maxPrice');
 
         setSearchParams(params);
-    };
+    };     
 
     // Filter Logic
     const filteredItems = useMemo(() => {

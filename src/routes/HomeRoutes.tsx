@@ -14,6 +14,7 @@ import OrderDetailPage from "../pages/OrderDetailPage";
 import MyOrdersPage from "../pages/MyOrdersPage";
 
 import Marketplace from "../pages/Marketplace";
+import CollectionCategoryPage from "../pages/CollectionCategoryPage";
 
 const HomeRoutes = () => {
   return (
@@ -23,7 +24,7 @@ const HomeRoutes = () => {
         <Route path="/market" element={<Marketplace />} />
         <Route path="/collections" element={<CategoryPage />} />
         {/* repolace with new colllections display page instead of same category */}
-        {/* <Route path="/collection/:category" element={<CategoryPage />} /> */}
+        <Route path="/collections/:category" element={<CollectionCategoryPage  />} />
         <Route path="/collection/:category/:slug" element={<CollectionPage />} />
 
         <Route path="/market/:category" element={<CategoryPage />} />
