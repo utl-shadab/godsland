@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, ChevronRight, ExternalLink } from 'lucide-react';
+import { Search, Filter, ChevronRight } from 'lucide-react';
 
 const mockOrders = [
     {

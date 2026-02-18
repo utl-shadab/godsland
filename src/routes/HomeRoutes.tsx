@@ -36,7 +36,7 @@ const HomeRoutes = () => {
         <Route path="/launchpad" element={<DropPage />} />
 
           <Route path="/create" element={<CreateNFT />} />
-          <Route path="/sell/:contractAddress/:tokenId" element={<SellNFT />} />
+          {/* <Route path="/sell/:contractAddress/:tokenId" element={<SellNFT />} /> */}
 
        
           {/* <Route

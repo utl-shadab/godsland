@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 // Animation variants
@@ -7,7 +6,7 @@ const fadeInUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.5, delay: i * 0.1 },
   }),
 };
 
@@ -16,7 +15,7 @@ const scaleIn = {
   visible: (i = 0) => ({
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.45, delay: i * 0.08 },
   }),
 };
 
