@@ -56,7 +56,7 @@ const LiveAuctionCard = ({ title, image, price }: LiveAuctionCardProps) => {
                     <p className="text-sm font-bold text-white tabular-nums">{price}</p>
 
                 </div>
-                <Link to={`/auction/${title.toLowerCase().replace(/\s+/g, '-')}`} className="w-full">
+                <Link to={`/auction//${title.toLowerCase().replace(/\s+/g, '-')}`} className="w-full">
                     <button className="w-full flex justify-center py-2 bg-neon-green cursor-pointer text-black font-bold uppercase text-xs tracking-wider rounded-[6px] hover:bg-white transition-all duration-300 flex items-center gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0">
                         <Gavel size={14} /> Bid
                     </button>
