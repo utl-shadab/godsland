@@ -10,8 +10,6 @@ import AuctionPage from "../pages/AuctionPage";
 import AuctionItemPage from "../pages/AuctionItemPage";
 import MintPage from "../pages/MintPage";
 import DropPage from "../pages/DropPage";
-import OrderDetailPage from "../pages/OrderDetailPage";
-import MyOrdersPage from "../pages/MyOrdersPage";
 
 import Marketplace from "../pages/Marketplace";
 import CollectionCategoryPage from "../pages/CollectionCategoryPage";
