@@ -1,17 +1,18 @@
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
 const categories = [
-    { name: 'Luxury', rank: '#1', items: '10,000', owners: '3,241', verified: true, floorPrice: '2.5 ETH', volume: '12.4K ETH', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=600' },
-    { name: 'Business', rank: '#2', items: '5,000', owners: '1,892', verified: true, floorPrice: '0.8 ETH', volume: '5.2K ETH', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600' },
-    { name: 'Wellness', rank: '#3', items: '8,000', owners: '2,430', verified: false, floorPrice: '1.2 ETH', volume: '8.9K ETH', image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=600' },
-    { name: 'Entertainment', rank: '#4', items: '12,000', owners: '4,567', verified: true, floorPrice: '0.5 ETH', volume: '3.1K ETH', image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600' },
-    { name: 'Art', rank: '#5', items: '6,000', owners: '2,109', verified: false, floorPrice: '3.0 ETH', volume: '15.6K ETH', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&q=80&w=600' },
+    { name: 'Luxury', redirect: '/categories/luxury', rank: '#1', items: '10,000', owners: '3,241', verified: true, floorPrice: '2.5 ETH', volume: '12.4K ETH', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=600' },
+    { name: 'Business', redirect: '/categories/business', rank: '#2', items: '5,000', owners: '1,892', verified: true, floorPrice: '0.8 ETH', volume: '5.2K ETH', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600' },
+    { name: 'Wellness', redirect: '/categories/wellness', rank: '#3', items: '8,000', owners: '2,430', verified: false, floorPrice: '1.2 ETH', volume: '8.9K ETH', image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=600' },
+    { name: 'Entertainment', redirect: '/categories/entertainment', rank: '#4', items: '12,000', owners: '4,567', verified: true, floorPrice: '0.5 ETH', volume: '3.1K ETH', image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600' },
+    { name: 'Art', redirect: '/categories/art', rank: '#5', items: '6,000', owners: '2,109', verified: false, floorPrice: '3.0 ETH', volume: '15.6K ETH', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&q=80&w=600' },
 ];
 
 const CategoryCard = ({ cat }: { cat: typeof categories[0] }) => {
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         if (buttonRef.current) {
@@ -103,6 +104,7 @@ const CategoryCard = ({ cat }: { cat: typeof categories[0] }) => {
                 {/* Animated Button */}
                 <button
                     ref={buttonRef}
+                    onClick={()=>navigate(`/collections/${cat.name.toLocaleLowerCase()}`)}
                     className="w-full cursor-pointer bg-neon-green text-black py-3 rounded-lg font-bold hover:bg-white transition-colors duration-300 h-0 opacity-0 overflow-hidden"
                 >
                     View Collection
