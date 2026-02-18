@@ -34,6 +34,23 @@ const HomeRoutes = () => {
 
         <Route path="/launchpad/:slug" element={<MintPage />} />
         <Route path="/launchpad" element={<DropPage />} />
+
+          <Route path="/create" element={<CreateNFT />} />
+          <Route path="/sell/:contractAddress/:tokenId" element={<SellNFT />} />
+
+       
+          {/* <Route
+            path="/auction/create/:contractAddress/:tokenId"
+            element={<CreateAuction />}
+          /> */}
+          {/* create aution page if needed  */}
+
+          {/* NFT Club & Conversion */}
+          {/* <Route path="/club" element={<NFTClub />} />
+          <Route path="/club/convert" element={<NFTConversion />} /> */}
+
+          {/* Rewards */}
+          {/* <Route path="/rewards" element={<Rewards />} /> */}
    
         <Route path="/club" element={<ComingSoon />} />
         <Route path="/collections" element={<ComingSoon />} />
