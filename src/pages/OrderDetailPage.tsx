@@ -120,7 +120,7 @@ const OrderDetailPage = () => {
 
                         {/* Actions */}
                         <div className="flex flex-col gap-3">
-                            <button onClick={() => navigate('/my-orders')} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-colors uppercase tracking-wider text-sm">
+                            <button onClick={() => navigate('/user/my-orders')} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-colors uppercase tracking-wider text-sm">
                                 View My Orders
                             </button>
                             <button onClick={() => navigate('/')} className="w-full text-gray-500 hover:text-white py-2 text-sm transition-colors">

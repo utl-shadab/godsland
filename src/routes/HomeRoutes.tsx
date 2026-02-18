@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 
 import CreateNFT from "../pages/CreateNFT";
@@ -30,15 +30,18 @@ const HomeRoutes = () => {
         <Route path="/market/:category" element={<CategoryPage />} />
         <Route path="/create" element={<CreateNFT />} />
         <Route path="/explore" element={<CategoryPage />} />
+
         <Route path="/auction" element={<AuctionPage />} />
         <Route path="/auction/:slug" element={<AuctionItemPage />} />
-        <Route path="/drops/:slug" element={<MintPage />} />
-        <Route path="/drop" element={<DropPage />} />
-        <Route path="/orders/:orderId" element={<OrderDetailPage />} />
-        <Route path="/my-orders" element={<MyOrdersPage />} />
+
+        <Route path="/launchpad/:slug" element={<MintPage />} />
+        <Route path="/launchpad" element={<DropPage />} />
+   
         <Route path="/club" element={<ComingSoon />} />
         <Route path="/collections" element={<ComingSoon />} />
         <Route path="/pages" element={<ComingSoon />} />
+        <Route path="/*" element={<Navigate to="/" />} /> 
+        {/* change with the 404 page */}
       </Route>
     </Routes>
   );

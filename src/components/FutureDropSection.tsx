@@ -98,7 +98,7 @@ const FutureDropSection = () => {
                         </h2>
                     </div>
                     <button
-                        onClick={() => navigate('/drop')}
+                        onClick={() => navigate('/launchpad')}
                         className="group flex items-center gap-2 text-white hover:text-neon-green transition-colors pb-2 border-b border-white/20 hover:border-neon-green"
                     >
                         <span className="font-bold tracking-wide text-sm">View Calendar</span>

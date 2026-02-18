@@ -21,11 +21,21 @@ const CategoryPage = () => {
   }, [categoryFromQuery]);
 
   // Filtering Logic (Collections)
-  const filteredCollections = COLLECTIONS.filter((col) => {
+  let filteredCollections = COLLECTIONS.filter((col) => {
     if (selectedCategory !== "all" && col.categoryId !== selectedCategory)
       return false;
     return true;
-  }).slice(0, 8); // Limit to 8 for the grid
+  });
+
+  // When "all" is selected, distribute from different categories
+  if (selectedCategory === "all") {
+    const byCategory = CATEGORIES.map(cat =>
+      COLLECTIONS.filter(col => col.categoryId === cat.id).slice(0, 2)
+    ).flat();
+    filteredCollections = byCategory.slice(0, 8);
+  } else {
+    filteredCollections = filteredCollections.slice(0, 8);
+  }
 
   // Mock Trending Items (from MOCK_NFTS or BIGGEST_MOVERS)
   const trendingItems = MOCK_NFTS.slice(0, 10);

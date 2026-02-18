@@ -72,7 +72,7 @@ const MyOrdersPage = () => {
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {mockOrders.map((order) => (
-                                    <tr key={order.id} className="hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => navigate(`/orders/${order.id}`)}>
+                                    <tr key={order.id} className="hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => navigate(`/user/orders/${order.id}`)}>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-800">
