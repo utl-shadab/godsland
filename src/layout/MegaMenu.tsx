@@ -67,7 +67,7 @@ const MegaMenu = ({ isOpen, onClose }: MegaMenuProps) => {
                     <div className="flex flex-col gap-4">
                         <h4 className="text-sm font-bold uppercase tracking-widest text-text-secondary mb-6">Browse Categories</h4>
                         {categories.map((cat) => (
-                            <Link to={`/collections?category=${cat.name.toLowerCase()}`} key={cat.name} onClick={onClose} className="group relative flex items-center justify-between py-2 border-b border-white/5 transition-all duration-300 hover:border-neon-green/50">
+                            <Link to={`/collections/${cat.name.toLowerCase()}`} key={cat.name} onClick={onClose} className="group relative flex items-center justify-between py-2 border-b border-white/5 transition-all duration-300 hover:border-neon-green/50">
                                 <h3 className="text-4xl font-black uppercase text-transparent stroke-white/30 [-webkit-text-stroke:1px_rgba(255,255,255,0.3)] cursor-pointer transition-all duration-300 group-hover:text-white group-hover:[-webkit-text-stroke:0px] group-hover:drop-shadow-[0_0_10px_rgba(0,255,163,0.5)]">
                                     {cat.name}
                                 </h3>
