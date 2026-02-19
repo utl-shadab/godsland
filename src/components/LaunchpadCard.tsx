@@ -50,7 +50,7 @@ const LaunchpadCard = ({ title, image, price, items, mintedPercent, endsIn, slug
 
     return (
         <div
-            onClick={() => navigate(`/drops/${slug}`)}
+            onClick={() => navigate(`/launchpad/${slug}`)}
             className="group relative bg-[#1a1a1e] rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-white/10 transition-all duration-300 w-full max-w-[340px]"
         >
             {/* Image Container */}
