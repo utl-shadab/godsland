@@ -30,11 +30,11 @@ export default function UserHome() {
         custom={0}
         className="mb-8"
       >
-        <p className="text-[#20FFB0] font-readex text-sm font-medium tracking-widest uppercase mb-2">
+        <p className="text-[#00d32c] font-readex text-sm font-medium tracking-widest uppercase mb-2">
           Dashboard
         </p>
         <h1 className="text-white font-readex text-3xl md:text-4xl font-bold leading-tight">
-          Welcome back, <span className="text-[#20FFB0]">0xdf....d9A0</span>
+          Welcome back, <span className="text-[#00d32c]">0xdf....d9A0</span>
         </h1>
       </motion.div>
 
@@ -93,7 +93,7 @@ export default function UserHome() {
             variants={scaleIn}
             custom={i}
             whileHover={{ y: -3, transition: { duration: 0.2 } }}
-            className="flex items-start gap-5 p-5 rounded-2xl border border-[#0D2B1F] bg-[#050F0B] hover:border-[#20FFB0]/20 transition-all duration-300 cursor-pointer group"
+            className="flex items-start gap-5 p-5 rounded-2xl border border-[#00d32c] bg-black hover:border-[#00d32c]/20 transition-all duration-300 cursor-pointer group"
           >
             <div className="w-12 h-12 rounded-xl bg-[#0A2219] flex items-center justify-center flex-shrink-0 group-hover:bg-[#0D3B2B] transition-colors duration-300">
               {stat.icon}
@@ -105,7 +105,7 @@ export default function UserHome() {
               <p className="text-white font-readex text-2xl font-bold leading-tight">
                 {stat.value}
               </p>
-              <p className="text-[#20FFB0] font-readex text-xs mt-1">
+              <p className="text-[#00d32c] font-readex text-xs mt-1">
                 {stat.trend}
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function UserHome() {
           animate="visible"
           variants={fadeInUp}
           custom={3}
-          className="w-full rounded-2xl border border-[#0D2B1F] overflow-hidden relative"
+          className="w-full rounded-2xl border border-[#00d32c] overflow-hidden relative"
           style={{ minHeight: 280, maxHeight: 360 }}
         >
           <img
@@ -132,7 +132,7 @@ export default function UserHome() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020F0A] via-[#020F0A]/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6">
-            <span className="inline-block px-2 py-0.5 rounded-full bg-[#20FFB0]/15 border border-[#20FFB0]/30 text-[#20FFB0] text-xs font-readex font-medium mb-3">
+            <span className="inline-block px-2 py-0.5 rounded-full bg-[#00d32c]/15 border border-[#00d32c]/30 text-[#00d32c] text-xs font-readex font-medium mb-3">
               Featured Drop
             </span>
             <h3 className="text-white font-readex text-2xl font-semibold leading-tight mb-2">
@@ -149,11 +149,11 @@ export default function UserHome() {
               </div>
               <div>
                 <p className="text-[#4A7A65] font-readex text-xs">24h change</p>
-                <p className="text-[#20FFB0] font-readex text-sm font-semibold">
+                <p className="text-[#00d32c] font-readex text-sm font-semibold">
                   +0.00%
                 </p>
               </div>
-              <button className="ml-auto px-5 h-9 rounded-full bg-[#20FFB0] text-[#020F0A] font-readex text-sm font-bold hover:bg-[#20FFB0]/90 transition-colors duration-200">
+              <button className="ml-auto px-5 h-9 rounded-full bg-[#00d32c] text-[#020F0A] font-readex text-sm font-bold hover:bg-[#00d32c]/90 transition-colors duration-200">
                 View NFT
               </button>
             </div>
@@ -166,7 +166,7 @@ export default function UserHome() {
           animate="visible"
           variants={fadeInUp}
           custom={4}
-          className="lg:w-[220px] rounded-2xl border border-[#0D2B1F] bg-[#050F0B] p-5 flex flex-col gap-4"
+          className="lg:w-[220px] rounded-2xl border border-[#00d32c] bg-black p-5 flex flex-col gap-4"
         >
           <p className="text-white font-readex text-sm font-semibold">
             Market Overview
@@ -179,7 +179,7 @@ export default function UserHome() {
           ].map((item, i) => (
             <div
               key={i}
-              className="flex items-center justify-between py-2 border-b border-[#0D2B1F] last:border-0"
+              className="flex items-center justify-between py-2 border-b border-[#00d32c] last:border-0"
             >
               <p className="text-[#4A7A65] font-readex text-xs">{item.label}</p>
               <div className="text-right">
@@ -187,7 +187,7 @@ export default function UserHome() {
                   {item.value}
                 </p>
                 <p
-                  className={`font-readex text-[10px] ${item.up ? "text-[#20FFB0]" : "text-red-400"}`}
+                  className={`font-readex text-[10px] ${item.up ? "text-[#00d32c]" : "text-red-400"}`}
                 >
                   {item.up ? "▲" : "▼"} {item.up ? "2.4%" : "1.1%"}
                 </p>
@@ -214,7 +214,7 @@ export default function UserHome() {
               Discover what's hot in the market
             </p>
           </div>
-          <button className="hidden sm:flex items-center gap-2 text-[#20FFB0] font-readex text-sm font-medium hover:opacity-80 transition-opacity">
+          <button className="hidden sm:flex items-center gap-2 text-[#00d32c] font-readex text-sm font-medium hover:opacity-80 transition-opacity">
             View all{" "}
             <svg
               width="16"
@@ -250,7 +250,7 @@ export default function UserHome() {
             animate="visible"
             variants={fadeInUp}
             custom={5 + si}
-            className="mb-5 rounded-2xl border border-[#0D2B1F] bg-[#050F0B] overflow-hidden"
+            className="mb-5 rounded-2xl border border-[#00d32c] bg-black overflow-hidden"
           >
             <div className="p-5 md:p-6 flex flex-col md:flex-row gap-6">
               {/* Label */}
@@ -261,13 +261,13 @@ export default function UserHome() {
                   </p>
                   <h3 className="text-white font-readex text-3xl md:text-4xl font-bold leading-none">
                     {section.label.split("").map((ch, i) => (
-                      <span key={i} className={i < 2 ? "text-[#20FFB0]" : ""}>
+                      <span key={i} className={i < 2 ? "text-[#00d32c]" : ""}>
                         {ch}
                       </span>
                     ))}
                   </h3>
                 </div>
-                <button className="mt-5 md:mt-0 w-fit md:w-full h-10 px-5 rounded-full bg-gradient-to-r from-[#0A5438] to-[#20FFB0] text-white font-readex text-sm font-bold hover:opacity-90 transition-opacity">
+                <button className="mt-5 md:mt-0 w-fit md:w-full h-10 px-5 rounded-full bg-gradient-to-r from-[#0A5438] to-[#00d32c] text-white font-readex text-sm font-bold hover:opacity-90 transition-opacity">
                   See More
                 </button>
               </div>
@@ -334,11 +334,11 @@ export default function UserHome() {
               variants={scaleIn}
               custom={i}
               whileHover={{ scale: 1.02, transition: { duration: 0.15 } }}
-              className="flex items-center gap-3 p-3 rounded-xl border border-[#0D2B1F] bg-[#050F0B] hover:border-[#20FFB0]/20 transition-colors duration-200 cursor-pointer"
+              className="flex items-center gap-3 p-3 rounded-xl border border-[#00d32c] bg-black hover:border-[#00d32c]/20 transition-colors duration-200 cursor-pointer"
             >
               <div className="relative flex-shrink-0">
-                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0D3B2B] to-[#20FFB0]/30 border border-[#20FFB0]/20" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#020F0A] border border-[#0D2B1F] text-[#20FFB0] font-readex text-[9px] font-bold flex items-center justify-center">
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0D3B2B] to-[#00d32c]/30 border border-[#00d32c]/20" />
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-blackborder border-[#00d32c] text-[#00d32c] font-readex text-[9px] font-bold flex items-center justify-center">
                   {seller.rank}
                 </span>
               </div>
@@ -346,7 +346,7 @@ export default function UserHome() {
                 <p className="text-white font-readex text-sm font-semibold">
                   {seller.name}
                 </p>
-                <p className="text-[#20FFB0] font-readex text-xs">
+                <p className="text-[#00d32c] font-readex text-xs">
                   {seller.eth}
                 </p>
               </div>
@@ -355,7 +355,7 @@ export default function UserHome() {
         </div>
 
         <div className="flex justify-center">
-          <button className="px-8 h-11 rounded-full border border-[#20FFB0] bg-[#20FFB0]/5 text-[#20FFB0] font-readex text-sm font-bold tracking-wide hover:bg-[#20FFB0]/10 transition-colors duration-200">
+          <button className="px-8 h-11 rounded-full border border-[#00d32c] bg-[#00d32c]/5 text-[#00d32c] font-readex text-sm font-bold tracking-wide hover:bg-[#00d32c]/10 transition-colors duration-200">
             Explore All Sellers
           </button>
         </div>
@@ -374,21 +374,21 @@ interface NFTCardProps {
 function NFTCard({ image, title, price, change }: NFTCardProps) {
   const isPositive = change.startsWith("+");
   return (
-    <div className="w-52 rounded-xl border border-[#0D2B1F] bg-[#050F0B] overflow-hidden hover:border-[#20FFB0]/20 transition-colors duration-200">
+    <div className="w-52 rounded-xl border border-[#00d32c] bg-black overflow-hidden hover:border-[#00d32c]/20 transition-colors duration-200">
       <div className="relative">
         <img src={image} alt={title} className="w-full h-40 object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050F0B]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
       <div className="p-3 flex flex-col gap-1.5">
         <p className="text-white font-readex text-sm font-semibold">{title}</p>
         <p className="text-[#4A7A65] font-readex text-xs">Floor {price}</p>
         <div className="flex items-center justify-between">
           <p
-            className={`font-readex text-xs font-medium ${isPositive ? "text-[#20FFB0]" : "text-red-400"}`}
+            className={`font-readex text-xs font-medium ${isPositive ? "text-[#00d32c]" : "text-red-400"}`}
           >
             {change}
           </p>
-          <button className="px-2 py-0.5 rounded-md bg-[#20FFB0]/10 text-[#20FFB0] font-readex text-[10px] font-bold hover:bg-[#20FFB0]/20 transition-colors duration-200">
+          <button className="px-2 py-0.5 rounded-md bg-[#00d32c]/10 text-[#00d32c] font-readex text-[10px] font-bold hover:bg-[#00d32c]/20 transition-colors duration-200">
             Buy
           </button>
         </div>

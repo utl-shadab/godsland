@@ -23,9 +23,9 @@ const UserLayout = () => {
   }, [mobileMenuOpen])
 
   return (
-    <div className="min-h-screen bg-[#020F0A] font-readex">
+    <div className="min-h-screen bg-blackfont-readex">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-[230px] bg-[#050F0B] border-r border-[#0D2B1F] flex-col z-40">
+      <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-[230px] bg-black border-r border-[#00d32c] flex-col z-40">
         <UserSidebar />
       </aside>
 
@@ -53,15 +53,15 @@ const UserLayout = () => {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed left-0 top-0 h-screen w-[260px] bg-[#050F0B] border-r border-[#0D2B1F] flex flex-col z-50 lg:hidden"
+            className="fixed left-0 top-0 h-screen w-[260px] bg-black border-r border-[#00d32c] flex flex-col z-50 lg:hidden"
           >
             <div className="flex items-center justify-between px-6 pt-5 pb-2">
               <h1 className="text-white font-readex text-[24px] font-semibold">
-                Gods<span className="text-[#20FFB0]">land</span>
+                Gods<span className="text-[#00d32c]">land</span>
               </h1>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-lg bg-[#0D3B2B] flex items-center justify-center text-[#20FFB0]"
+                className="w-8 h-8 rounded-lg bg-[#0D3B2B] flex items-center justify-center text-[#00d32c]"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <path d="M18 6L6 18M6 6l12 12" />
