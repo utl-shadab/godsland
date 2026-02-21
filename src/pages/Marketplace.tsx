@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, SlidersHorizontal } from "lucide-react";
 import FeaturedCollectionCard from "../components/Marketplace/FeaturedCollectionCard";
 import MinimalItemCard from "../components/Marketplace/MinimalItemCard";
@@ -7,13 +8,20 @@ import MarketplaceDropdown from "../components/Marketplace/MarketplaceDropdown";
 import DesktopFilterSidebar from "../components/Marketplace/DesktopFilterSidebar";
 import { CATEGORIES, COLLECTIONS, MOCK_NFTS } from "../data/marketplaceData";
 import MobileFilterDrawer from "../components/MobileFilterDrawer";
+import ItemModal from "../components/Items/ItemModal";
+import CheckoutModal from "../components/Checkout/CheckoutModal";
 
 const Marketplace = () => {
+    const navigate = useNavigate();
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [isDesktopFilterOpen, setIsDesktopFilterOpen] = useState(true);
     const [sortOption, setSortOption] = useState("Recently Listed");
+
+    // Modal States
+    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [checkoutItem, setCheckoutItem] = useState<any>(null);
 
     // Filter States
     const [priceRange, setPriceRange] = useState([0, 10]);
@@ -23,6 +31,19 @@ const Marketplace = () => {
         setSelectedTypes(prev =>
             prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
         );
+    };
+
+    const handleItemClick = (item: any) => {
+        setSelectedItem(item);
+    };
+
+    const handleBuyItem = (item: any) => {
+        setSelectedItem(null);
+        setCheckoutItem(item);
+    };
+
+    const handleCollectionClick = (collection: any) => {
+        navigate(`/collection/${collection.categoryId}/${collection.id}`);
     };
 
     // Initial Data
@@ -139,7 +160,11 @@ const Marketplace = () => {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                                 {featuredCollections.map((col, idx) => (
-                                    <FeaturedCollectionCard key={idx} collection={col} />
+                                    <FeaturedCollectionCard 
+                                        key={idx} 
+                                        collection={col} 
+                                        onClick={() => handleCollectionClick(col)}
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -164,7 +189,11 @@ const Marketplace = () => {
                             : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
                             }`}>
                             {filteredItems.map((item, idx) => (
-                                <MinimalItemCard key={idx} item={item} />
+                                <MinimalItemCard 
+                                    key={idx} 
+                                    item={item} 
+                                    onClick={() => handleItemClick(item)}
+                                />
                             ))}
                         </div>
 
@@ -211,6 +240,20 @@ const Marketplace = () => {
                 setPriceRange={setPriceRange}
                 selectedTypes={selectedTypes}
                 toggleType={toggleType}
+            />
+
+            {/* Modals */}
+            <ItemModal
+                isOpen={!!selectedItem}
+                itemId={selectedItem?.id}
+                onClose={() => setSelectedItem(null)}
+                onBuy={() => handleBuyItem(selectedItem)}
+            />
+
+            <CheckoutModal
+                isOpen={!!checkoutItem}
+                onClose={() => setCheckoutItem(null)}
+                item={checkoutItem}
             />
 
         </div>

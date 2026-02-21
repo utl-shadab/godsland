@@ -137,12 +137,12 @@ const AuctionItemPage = () => {
                                 >
                                     Place bid
                                 </button>
-                                <button
+                                {/* <button
                                     onClick={() => setIsCreateOrderModalOpen(true)}
                                     className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-lg transition-colors uppercase tracking-wider text-sm border border-white/10"
                                 >
                                     Create Order
-                                </button>
+                                </button> */}
                             </div>
 
                             {/* Owner / Collection Info Rows */}

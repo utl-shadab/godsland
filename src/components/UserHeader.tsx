@@ -29,7 +29,7 @@ const UserHeader = ({ setMobileMenuOpen }: { setMobileMenuOpen: React.Dispatch<R
           </svg>
         </button>
         <div className="flex items-center gap-10">
-          <Link to="/user" className="text-white hidden lg:block font-readex text-[24px] font-semibold">
+          <Link to="/" className="text-white hidden lg:block font-readex text-[24px] font-semibold">
             Gods<span className="text-[#00d32c]">land</span>
           </Link>
           <div className="flex items-center gap-3 flex-1 max-w-[320px] h-10 rounded-full bg-[#0A2219]/80 border border-[#1A4A35] px-4 focus-within:border-[#00d32c] transition-all duration-200">
