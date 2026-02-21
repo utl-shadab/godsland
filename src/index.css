@@ -159,3 +159,64 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   width: 8px;
 }
+
+/* Fade-in utility */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3D Membership Card animations */
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+
+  25% {
+    transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+  }
+
+  50% {
+    transform: translateY(-4px) rotateX(-1deg) rotateY(1deg);
+  }
+
+  75% {
+    transform: translateY(-10px) rotateX(1deg) rotateY(-1deg);
+  }
+}
+
+@keyframes cardShine {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(0, 211, 44, 0.05);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(0, 211, 44, 0.15);
+  }
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

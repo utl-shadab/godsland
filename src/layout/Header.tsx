@@ -121,7 +121,7 @@ const Header = () => {
                     <Link to="/auction" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Auctions
                     </Link>
-                      {/* <Link to="/launchpad" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
+                    {/* <Link to="/launchpad" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
                         Launchpad
                     </Link> */}
                     <Link to="/club" className={`text-sm font-bold uppercase tracking-widest relative cursor-pointer transition-colors duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] ${isScrolled ? 'text-neon-green hover:text-white' : 'text-white hover:text-neon-green'}`}>
@@ -168,13 +168,13 @@ const Header = () => {
                                 <h4 className="text-xl font-bold text-white font-mono">14.50 ETH</h4>
                             </div>
                             <div className="py-2">
-                                <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                                <Link to="/user" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
                                     <User size={16} className="text-neon-green" /> My Profile
                                 </Link>
-                                <Link to="/collections" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                                <Link to="/user/owned" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
                                     <Grid size={16} className="text-blue-400" /> My NFTs
                                 </Link>
-                                <Link to="/settings" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                                <Link to="/user/settings" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
                                     <Settings size={16} className="text-gray-400" /> Settings
                                 </Link>
                             </div>

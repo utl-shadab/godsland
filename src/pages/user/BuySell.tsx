@@ -14,7 +14,7 @@ const BuySell = () => {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto">
+    <div className="max-w-7xl mx-auto">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-6">
         <div>
           <p className="text-[#20FFB0] text-xs font-semibold uppercase tracking-[0.3em]">
@@ -30,21 +30,19 @@ const BuySell = () => {
         <div className="flex items-center gap-2 rounded-full border border-[#0D2B1F] bg-[#050F0B] p-1">
           <button
             onClick={() => handleModeChange("buy")}
-            className={`px-4 h-9 rounded-full text-sm font-semibold transition-colors duration-200 ${
-              mode === "buy"
+            className={`px-4 h-9 rounded-full text-sm font-semibold transition-colors duration-200 ${mode === "buy"
                 ? "bg-[#20FFB0] text-[#020F0A]"
                 : "text-[#4A7A65] hover:text-white"
-            }`}
+              }`}
           >
             Buy
           </button>
           <button
             onClick={() => handleModeChange("sell")}
-            className={`px-4 h-9 rounded-full text-sm font-semibold transition-colors duration-200 ${
-              mode === "sell"
+            className={`px-4 h-9 rounded-full text-sm font-semibold transition-colors duration-200 ${mode === "sell"
                 ? "bg-[#20FFB0] text-[#020F0A]"
                 : "text-[#4A7A65] hover:text-white"
-            }`}
+              }`}
           >
             Sell
           </button>

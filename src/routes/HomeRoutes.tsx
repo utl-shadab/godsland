@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 
 import CreateNFT from "../pages/CreateNFT";
-import ComingSoon from "../pages/ComingSoon";
+import ComingSoon from "../pages/MemberShipClubPage";
 import HomeLayout from "../layout/HomeLayout";
 import CategoryPage from "../pages/CategoryPage";
 import CollectionPage from "../pages/CollectionPage";
@@ -13,6 +13,7 @@ import DropPage from "../pages/DropPage";
 
 import Marketplace from "../pages/Marketplace";
 import CollectionCategoryPage from "../pages/CollectionCategoryPage";
+import MembershipClub from "../pages/MemberShipClubPage";
 
 const HomeRoutes = () => {
   return (
@@ -22,7 +23,7 @@ const HomeRoutes = () => {
         <Route path="/market" element={<Marketplace />} />
         <Route path="/collections" element={<CategoryPage />} />
         {/* repolace with new colllections display page instead of same category */}
-        <Route path="/collections/:category" element={<CollectionCategoryPage  />} />
+        <Route path="/collections/:category" element={<CollectionCategoryPage />} />
         <Route path="/collection/:category/:slug" element={<CollectionPage />} />
 
         <Route path="/market/:category" element={<CategoryPage />} />
@@ -35,27 +36,27 @@ const HomeRoutes = () => {
         <Route path="/launchpad/:slug" element={<MintPage />} />
         <Route path="/launchpad" element={<DropPage />} />
 
-          <Route path="/create" element={<CreateNFT />} />
-          {/* <Route path="/sell/:contractAddress/:tokenId" element={<SellNFT />} /> */}
+        <Route path="/create" element={<CreateNFT />} />
+        {/* <Route path="/sell/:contractAddress/:tokenId" element={<SellNFT />} /> */}
 
-       
-          {/* <Route
+
+        {/* <Route
             path="/auction/create/:contractAddress/:tokenId"
             element={<CreateAuction />}
           /> */}
-          {/* create aution page if needed  */}
+        {/* create aution page if needed  */}
 
-          {/* NFT Club & Conversion */}
-          {/* <Route path="/club" element={<NFTClub />} />
+        {/* NFT Club & Conversion */}
+        {/* <Route path="/club" element={<NFTClub />} />
           <Route path="/club/convert" element={<NFTConversion />} /> */}
 
-          {/* Rewards */}
-          {/* <Route path="/rewards" element={<Rewards />} /> */}
-   
-        <Route path="/club" element={<ComingSoon />} />
+        {/* Rewards */}
+        {/* <Route path="/rewards" element={<Rewards />} /> */}
+
+        <Route path="/club" element={<MembershipClub />} />
         <Route path="/collections" element={<ComingSoon />} />
         <Route path="/pages" element={<ComingSoon />} />
-        <Route path="/*" element={<Navigate to="/" />} /> 
+        <Route path="/*" element={<Navigate to="/" />} />
         {/* change with the 404 page */}
       </Route>
     </Routes>
