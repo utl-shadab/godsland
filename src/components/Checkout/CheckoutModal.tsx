@@ -137,6 +137,10 @@ const CheckoutModal = ({ isOpen, onClose, item }: CheckoutModalProps) => {
                                 <span className="text-gray-400">Service Fee (2.5%)</span>
                                 <span className="text-white font-mono">{serviceFee.toFixed(4)} ETH</span>
                             </div>
+                                     <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Quantity </span>
+                                <span className="text-white font-mono"> 7</span>
+                            </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Creator Royalty (5%)</span>
                                 <span className="text-white font-mono">{royaltyFee.toFixed(4)} ETH</span>

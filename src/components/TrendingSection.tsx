@@ -17,7 +17,7 @@ const TrendingSection = () => {
                 {/* Header */}
                 <div className="mb-16 flex justify-between items-end">
                     <h2 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 uppercase tracking-tight">
-                        Trending Categories
+                        Trending NFTs
                     </h2>
 
                     <a

@@ -12,6 +12,7 @@ const TrendingCard = ({ title, image, price }: TrendingCardProps) => {
         <div className="group relative w-full bg-[#0b0b0b] rounded-3xl overflow-hidden border border-white/5 hover:border-gold-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(255,215,0,0.12)]">
 
             {/* Image */}
+
             <div className="aspect-square relative overflow-hidden p-3">
                 <div className="w-full h-full rounded-2xl overflow-hidden relative">
                     <img

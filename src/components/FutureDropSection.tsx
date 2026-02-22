@@ -94,7 +94,7 @@ const FutureDropSection = () => {
                             <span className="text-neon-green font-bold text-sm tracking-widest uppercase">Upcoming Drops</span>
                         </div>
                         <h2 className="text-4xl md:text-5xl font-bold text-white uppercase tracking-tight">
-                            Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Releases</span>
+                            Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">NFTs</span>
                         </h2>
                     </div>
                     <button
