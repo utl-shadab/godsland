@@ -9,53 +9,61 @@ const FeaturedCollectionCard = ({ collection, onClick }: FeaturedCollectionCardP
     return (
         <div
             onClick={onClick}
-            className="group relative h-[400px] w-full overflow-hidden rounded-2xl cursor-pointer"
+            className="group relative rounded-xl overflow-hidden bg-[#1a1a1a] border border-white/5 transition-all duration-300 hover:border-neon-green/50 hover:shadow-lg hover:-translate-y-1 cursor-pointer isolate"
         >
-            {/* Image Background */}
-            <div className="absolute inset-0">
+            {/* Image Container */}
+            <div className="aspect-square relative overflow-hidden bg-gray-900">
                 <img
                     src={collection.image}
                     alt={collection.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-60" />
             </div>
 
-            {/* Content Content - Bottom */}
-            <div className="absolute bottom-0 left-0 w-full p-6 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
-                <div className="flex justify-between items-end">
-                    <div>
-                        <div className="flex items-center gap-2 mb-2 transform transition-all duration-300 translate-y-0 group-hover:-translate-y-1">
-                            <h3 className="text-2xl font-bold text-white font-primary uppercase tracking-wide">
-                                {collection.name}
-                            </h3>
-                            {collection.verified && (
-                                <BadgeCheck size={20} className="text-neon-green fill-neon-green/10" />
-                            )}
-                        </div>
+            {/* Content Section */}
+            <div className="p-4 flex flex-col gap-2">
+                {/* Title + Verified Badge */}
+                <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-1.5 truncate pr-2">
+                        <h3 className="text-white font-bold text-sm tracking-wide truncate">
+                            {collection.name}
+                        </h3>
+                        {collection.verified && (
+                            <BadgeCheck size={14} className="text-neon-green fill-neon-green/10 flex-shrink-0" />
+                        )}
+                    </div>
+                </div>
 
-                        <div className="flex items-center gap-6 text-sm text-gray-300 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 delay-75">
-                            <div className="flex flex-col">
-                                <span className="text-xs text-gray-500 uppercase tracking-wider">Floor</span>
-                                <span className="font-mono font-bold text-white">{collection.floorPrice} ETH</span>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-xs text-gray-500 uppercase tracking-wider">Volume</span>
-                                <span className="font-mono font-bold text-white">{collection.volume || "12.5K"} ETH</span>
-                            </div>
+                {/* Stat Section (Floor & Volume) */}
+                <div className="mt-1 flex justify-between items-end">
+                    <div className="flex flex-col">
+                        <span className="text-[10px] text-gray-500 uppercase tracking-wider">Floor Price</span>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-white font-bold text-base">{collection.floorPrice}</span>
+                            <span className="text-[10px] text-gray-400 font-mono">ETH</span>
                         </div>
                     </div>
 
-                    <div className="opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 delay-100">
-                        <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5 backdrop-blur-md group-hover:bg-neon-green group-hover:border-neon-green transition-colors">
-                            <ArrowUpRight size={20} className="text-white group-hover:text-black" />
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] text-gray-500 uppercase tracking-wider">Volume</span>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-gray-300 font-bold text-sm">{collection.volume || "12.5K"}</span>
+                            <span className="text-[10px] text-gray-500 font-mono text-right">ETH</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Hover Border Glow */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-neon-green/50 rounded-2xl transition-colors duration-500 pointer-events-none" />
+                {/* Interaction Button (Hidden by default, visible on hover) */}
+                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/90 via-black/60 to-transparent hidden lg:flex items-end justify-center">
+                    <button
+                        className="w-full py-2 bg-neon-green text-black font-bold text-sm uppercase tracking-wider rounded shadow-lg hover:bg-white transition-colors flex items-center justify-center gap-2"
+                    >
+                        View Collection
+                        <ArrowUpRight size={16} />
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
