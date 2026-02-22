@@ -68,7 +68,7 @@ const ItemModal = ({ isOpen, itemId, onClose, onBuy }: ItemModalProps) => {
         if (!isNaN(val)) setQuantity(Math.min(MAX_QTY, Math.max(1, val)));
     };
 
-    const totalPrice = item ? (parseFloat(item.price) * quantity).toFixed(4) : '0';
+    const totalPrice = item ? ((item.price ?? 0) * quantity).toFixed(4) : '0';
     const totalUsd = (parseFloat(totalPrice) * 3402.12).toFixed(2);
 
     if (!isOpen) return null;

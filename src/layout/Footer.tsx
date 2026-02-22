@@ -1,58 +1,13 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Twitter, Instagram, Send } from 'lucide-react';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Footer = () => {
-    const footerRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const brandRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const footer = footerRef.current;
-        const ctx = gsap.context(() => {
-            gsap.fromTo(contentRef.current,
-                { y: 100, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 1,
-                    ease: 'power4.out',
-                    scrollTrigger: {
-                        trigger: footer,
-                        start: 'top 80%',
-                    }
-                }
-            );
-
-            gsap.fromTo(brandRef.current,
-                { y: 50, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 1.2,
-                    delay: 0.2,
-                    ease: 'power4.out',
-                    scrollTrigger: {
-                        trigger: footer,
-                        start: 'top 70%',
-                    }
-                }
-            );
-        }, footerRef);
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <footer className="relative bg-black text-white overflow-hidden pt-24 pb-8 px-8 border-t border-white/10" ref={footerRef}>
+        <footer className="relative bg-black text-white overflow-hidden pt-24 pb-8 px-8 border-t border-white/10">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,#1a2a22_0%,#000_50%)] -z-10 opacity-30"></div>
 
             <div className="max-w-[1400px] mx-auto z-10 relative">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20" ref={contentRef}>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 animate-[fadeInUp_1s_ease-out_both]">
                     <div className="col-span-1 md:col-span-1">
                         <Link to="/" className="text-2xl font-bold uppercase tracking-widest text-white block mb-6">
                             Gods<span className="text-neon-green">land</span>
@@ -99,7 +54,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="text-center" ref={brandRef}>
+                <div className="text-center animate-[fadeInUp_1.2s_0.2s_ease-out_both]">
                     <h1 className="text-[12vw] md:text-[14vw] font-black uppercase leading-[0.8] text-transparent stroke-white/5 [-webkit-text-stroke:2px_rgba(255,255,255,0.03)] select-none pointer-events-none">
                         Godsland
                     </h1>
